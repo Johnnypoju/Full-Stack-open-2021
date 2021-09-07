@@ -1,13 +1,10 @@
 import React from 'react'
-import Details from './Details'
 
-
-const Country = ({countries, handleClick}) => {
-
-    console.log(countries.name)
+const Country = ({countries, setDetailsForCountry}) => {
+    //console.log(countries.name)
     return (
         <div>
-            {countries.name} <button onClick={handleClick}>Show</button>
+            {countries.name} <button onClick={() => setDetailsForCountry(countries.name)}>Show</button>
         </div>
     )
 }

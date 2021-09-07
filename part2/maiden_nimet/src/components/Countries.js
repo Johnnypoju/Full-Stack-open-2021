@@ -2,17 +2,12 @@ import React, { useState } from 'react'
 import Country from './Country'
 import Details from './Details'
 
-const Countries = ({countries, finder}) => {
+const Countries = ({countries, finder, setDetailsForCountry, detailsForCountry}) => {
     const foundCountries = countries.filter(countries => countries.name.toLowerCase()
     .includes(finder.toLowerCase()))
     const countryListLen = (foundCountries.length)
 
-    const [detailsFlag, setDetailsFlag] = useState(false)
-
-    const handleClick = () => {
-        setDetailsFlag(true)
-        setCountryListLen(1)
-    }
+    
 
     if (countryListLen > 10) {
         return (
@@ -21,24 +16,35 @@ const Countries = ({countries, finder}) => {
             </div>
         )
     }
-    else if (countryListLen <= 10) {
-        if (countryListLen === 1){
+    else if (countryListLen <= 10){
+        console.log(countryListLen)
+        if (countryListLen === 1) {
             return (
                 <div>
-                    <Details country={foundCountries} />
-                </div>
-            )
+                     <Details country={foundCountries} />
+                 </div>
+             )
         }
-        else{
+        else if (detailsForCountry === '') {
             return (
                 <div>
                     {foundCountries.map(countries => (
-                    <Country key={countries.name} countries={countries} handleClick={handleClick}/>
+                    <Country key={countries.name} countries={countries} 
+                    setDetailsForCountry={setDetailsForCountry} />
                     ))}
                 </div>
-              
+                
             )
         }
+        else{
+            return(
+                <div>
+                    {foundCountries.filter(countries => countries.name.includes(detailsForCountry)).map(country =>
+                        <Details country={country} />)}
+                </div>
+            )
+        }
+    
     }
 }
 
