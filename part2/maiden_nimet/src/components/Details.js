@@ -1,8 +1,8 @@
 import React from 'react'
 import Languages from './Languages'
 
-const Details = ({country, setDetailsForCountry}) => {
-    setDetailsForCountry=('')
+const Details = ({country}) => {
+    console.log(country)
     return (
         <div>
         <h1>{country.name}</h1>

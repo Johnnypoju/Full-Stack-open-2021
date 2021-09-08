@@ -21,7 +21,7 @@ const Countries = ({countries, finder, setDetailsForCountry, detailsForCountry})
         if (countryListLen === 1) {
             return (
                 <div>
-                     <Details country={foundCountries} />
+                     <Details country={foundCountries[0]} />
                  </div>
              )
         }
