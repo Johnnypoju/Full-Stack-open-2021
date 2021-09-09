@@ -17,7 +17,6 @@ const App = () => {
     phonebookService
       .getAll()
         .then(initialPhoneBook => {
-          console.log(initialPhoneBook)
           setPersons(initialPhoneBook)
         })
         .catch(error => {
@@ -26,7 +25,6 @@ const App = () => {
   }, [])
 
   const handleNewName = (event) => {
-    console.log(event.target.value)
     setNewName(event.target.value)
   }
 
@@ -37,11 +35,17 @@ const App = () => {
       "number": newNumber
     }
     const personId = persons.map(person => person.name).indexOf(newName)
+    
+    //If person is found in phonebook ask if can be replaced
     if (personId > -1){
       if (window.confirm(`${newName} is already added to the phonebook. 
       Do you want to replace the old number with a new one?`)){
         phonebookService
-          .update(personId, personsObject)
+          .update(persons[personId].id, personsObject)
+            .then(newPhoneBook =>{
+              setPersons(persons.map(person => person.id !== newPhoneBook.id ? 
+                person : newPhoneBook))
+            })
       }
     }
     else { 
@@ -59,27 +63,18 @@ const App = () => {
     }
 
   const handleNewNumber = (event) => {
-    console.log(event.target.value)
     setNewNumber(event.target.value)
   }
 
   const handleFilter = (event) => {
-    console.log(event.target.value)
     setFilter(event.target.value)
   }
 
   const handleDeletion = (id) => {
     if (window.confirm("Do you really want to delete person")) {
-      console.log(id)
       phonebookService
         .deletion(id)
-          .then(phonebookService
-            .getAll()
-              .then(newPhoneBook => {
-                setPersons(newPhoneBook)
-              })
-              
-          )
+          .then(setPersons(persons.filter(person => person.id !== id)))
           .catch(error => {
             alert('some error in fetching data')})
           }     
