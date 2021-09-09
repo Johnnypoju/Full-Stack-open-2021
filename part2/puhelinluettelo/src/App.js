@@ -1,8 +1,8 @@
 import React, { useState, useEffect } from 'react'
-import axios from 'axios'
 import PersonList from './components/PersonList'
 import Filter from './components/Filter'
 import NewName from './components/NewName'
+import phonebookService from './services/phonebook'
 
 
 
@@ -14,11 +14,15 @@ const App = () => {
   const [ filter, setFilter] = useState('')
 
   useEffect(() => {
-    axios
-      .get('http://localhost:3001/persons')
-      .then(response => {
-        setPersons(response.data)
-      })
+    phonebookService
+      .getAll()
+        .then(initialPhoneBook => {
+          console.log(initialPhoneBook)
+          setPersons(initialPhoneBook)
+        })
+        .catch(error => {
+          alert('some error in fetching data')
+        })
   }, [])
 
   const handleNewName = (event) => {
@@ -28,15 +32,27 @@ const App = () => {
 
   const addNewName = (event) => {
     event.preventDefault()
-    if (persons.map(person => person.name).indexOf(newName) > -1){
-      window.alert(`${newName} has already been added to the phonebook`)
+    const personsObject = {
+      "name": newName,
+      "number": newNumber
     }
-    else {
-      const personsObject = {
-        name: newName,
-        number: newNumber
+    const personId = persons.map(person => person.name).indexOf(newName)
+    if (personId > -1){
+      if (window.confirm(`${newName} is already added to the phonebook. 
+      Do you want to replace the old number with a new one?`)){
+        phonebookService
+          .update(personId, personsObject)
       }
-      setPersons(persons.concat(personsObject))
+    }
+    else { 
+      phonebookService
+        .create(personsObject)
+          .then(newPhoneBook => {
+            setPersons(persons.concat(newPhoneBook))
+          })
+          .catch(error => {
+            alert('some error in adding new row')
+          })
     }
     setNewName('')
     setNewNumber('')
@@ -52,6 +68,23 @@ const App = () => {
     setFilter(event.target.value)
   }
 
+  const handleDeletion = (id) => {
+    if (window.confirm("Do you really want to delete person")) {
+      console.log(id)
+      phonebookService
+        .deletion(id)
+          .then(phonebookService
+            .getAll()
+              .then(newPhoneBook => {
+                setPersons(newPhoneBook)
+              })
+              
+          )
+          .catch(error => {
+            alert('some error in fetching data')})
+          }     
+  }
+
   return (
     <div>
       <h2>Phonebook</h2>      
@@ -62,7 +95,7 @@ const App = () => {
         newName={newName} newNumber={newNumber} addNewName={addNewName}/>
 
       <h3>Numbers</h3>
-      <PersonList persons={persons} filter={filter} />
+      <PersonList persons={persons} filter={filter} handleDeletion={handleDeletion}/>
     </div>
   )
 
