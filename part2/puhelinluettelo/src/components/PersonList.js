@@ -2,7 +2,6 @@ import React from 'react'
 import Person from './Person'
 
 const PersonList = ({persons, filter, handleDeletion}) => {
-    console.log(persons)
     return (
         <ul>
             {persons.filter(person => person.name.toLowerCase()

@@ -3,6 +3,8 @@ import PersonList from './components/PersonList'
 import Filter from './components/Filter'
 import NewName from './components/NewName'
 import phonebookService from './services/phonebook'
+import Notification from './components/Notification'
+import './index.css'
 
 
 
@@ -12,6 +14,7 @@ const App = () => {
   const [ newName, setNewName ] = useState('')
   const [ newNumber, setNewNumber] = useState('')
   const [ filter, setFilter] = useState('')
+  const [ errorMessage, setErrorMessage] = useState(null)
 
   useEffect(() => {
     phonebookService
@@ -19,9 +22,10 @@ const App = () => {
         .then(initialPhoneBook => {
           setPersons(initialPhoneBook)
         })
-        .catch(error => {
-          alert('some error in fetching data')
-        })
+          .then(setErrorMessage('All names fetched'))
+          .catch(error => {
+            setErrorMessage(error.message)
+          })
   }, [])
 
   const handleNewName = (event) => {
@@ -46,6 +50,9 @@ const App = () => {
               setPersons(persons.map(person => person.id !== newPhoneBook.id ? 
                 person : newPhoneBook))
             })
+            .catch(error => {
+              setErrorMessage(error.message)
+            })
       }
     }
     else { 
@@ -55,7 +62,7 @@ const App = () => {
             setPersons(persons.concat(newPhoneBook))
           })
           .catch(error => {
-            alert('some error in adding new row')
+            setErrorMessage(error.message)
           })
     }
     setNewName('')
@@ -75,8 +82,8 @@ const App = () => {
       phonebookService
         .deletion(id)
           .then(setPersons(persons.filter(person => person.id !== id)))
-          .catch(error => {
-            alert('some error in fetching data')})
+            .catch(error => {
+              setErrorMessage(error.message)})
           }     
   }
 
@@ -86,9 +93,10 @@ const App = () => {
       <Filter handleFilter={handleFilter} filter={filter}/>
 
       <h3>Add new</h3>
+      <Notification message={errorMessage} />
       <NewName handleNewName={handleNewName} handleNewNumber={handleNewNumber}
         newName={newName} newNumber={newNumber} addNewName={addNewName}/>
-
+      
       <h3>Numbers</h3>
       <PersonList persons={persons} filter={filter} handleDeletion={handleDeletion}/>
     </div>
