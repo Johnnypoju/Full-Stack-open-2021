@@ -15,15 +15,19 @@ const App = () => {
   const [ newNumber, setNewNumber] = useState('')
   const [ filter, setFilter] = useState('')
   const [ errorMessage, setErrorMessage] = useState(null)
+  const [ messageType, setMessageType] = useState('')
 
   useEffect(() => {
     phonebookService
       .getAll()
         .then(initialPhoneBook => {
           setPersons(initialPhoneBook)
+          setMessageType('succeed')
         })
-          .then(setErrorMessage('All names fetched'))
+          .then(
+            setErrorMessage('All names fetched'))
           .catch(error => {
+            setMessageType('error')
             setErrorMessage(error.message)
           })
   }, [])
@@ -44,14 +48,20 @@ const App = () => {
     if (personId > -1){
       if (window.confirm(`${newName} is already added to the phonebook. 
       Do you want to replace the old number with a new one?`)){
+        // replacing person from phonebook
         phonebookService
           .update(persons[personId].id, personsObject)
             .then(newPhoneBook =>{
               setPersons(persons.map(person => person.id !== newPhoneBook.id ? 
                 person : newPhoneBook))
+              setMessageType('succeed')
+              setErrorMessage(`${newName} added succesfully`)
             })
             .catch(error => {
-              setErrorMessage(error.message)
+              // removing person from display if already removed
+              setMessageType('error')
+              setErrorMessage(`${newName} has already been deleted from the server.`)
+              setPersons(persons.filter(person => person.id !== persons[personId].id))
             })
       }
     }
@@ -60,8 +70,11 @@ const App = () => {
         .create(personsObject)
           .then(newPhoneBook => {
             setPersons(persons.concat(newPhoneBook))
+            setMessageType('succeed')
+            setErrorMessage(`${newName} added succesfully`)
           })
           .catch(error => {
+            setMessageType('error')
             setErrorMessage(error.message)
           })
     }
@@ -81,8 +94,11 @@ const App = () => {
     if (window.confirm("Do you really want to delete person")) {
       phonebookService
         .deletion(id)
-          .then(setPersons(persons.filter(person => person.id !== id)))
+          .then(() => {setPersons(persons.filter(person => person.id !== id))
+          setMessageType('succeed')
+          setErrorMessage('Person deleted from phonebook')})
             .catch(error => {
+              setMessageType('error')
               setErrorMessage(error.message)})
           }     
   }
@@ -93,7 +109,7 @@ const App = () => {
       <Filter handleFilter={handleFilter} filter={filter}/>
 
       <h3>Add new</h3>
-      <Notification message={errorMessage} />
+      <Notification message={errorMessage} value={messageType} />
       <NewName handleNewName={handleNewName} handleNewNumber={handleNewNumber}
         newName={newName} newNumber={newNumber} addNewName={addNewName}/>
       
