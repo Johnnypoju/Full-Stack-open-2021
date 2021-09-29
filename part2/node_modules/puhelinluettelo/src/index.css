@@ -20,5 +20,13 @@ code {
   border-style: solid;
   border-radius: 5px;
   margin-bottom: 10px;
-
+}
+.succeed {
+  color: black;
+  padding: 10px;
+  font-size: 15px;
+  background: green;
+  border-style: solid;
+  border-radius: 5px;
+  margin-bottom: 10px;
 }
