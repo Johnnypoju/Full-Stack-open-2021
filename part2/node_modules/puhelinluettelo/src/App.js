@@ -7,7 +7,7 @@ import Notification from './components/Notification'
 import './index.css'
 
 
-
+console.log("shieet")
 
 const App = () => {
   const [ persons, setPersons] = useState([]) 
