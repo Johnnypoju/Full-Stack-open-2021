@@ -50,9 +50,10 @@ const App = () => {
         phonebookService
           .update(persons[personId].id, personsObject)
             .then(newPhoneBook =>{
-              setPersons(persons.map(person => person.id !== newPhoneBook.id ? 
+              console.log(newPhoneBook)
+              setPersons(persons.map(person => person.name !== newPhoneBook.name ? 
                 person : newPhoneBook))
-              console.log(persons)
+              
               setMessageType('succeed')
               setErrorMessage(`${newName} added succesfully`)
             })
@@ -68,6 +69,7 @@ const App = () => {
       phonebookService
         .create(personsObject)
           .then(newPhoneBook => {
+            console.log(newPhoneBook)
             setPersons(persons.concat(newPhoneBook))
             setMessageType('succeed')
             setErrorMessage(`${newName} added succesfully`)
