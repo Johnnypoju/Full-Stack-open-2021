@@ -7,8 +7,6 @@ import Notification from './components/Notification'
 import './index.css'
 
 
-console.log("shieet")
-
 const App = () => {
   const [ persons, setPersons] = useState([]) 
   const [ newName, setNewName ] = useState('')
@@ -54,6 +52,7 @@ const App = () => {
             .then(newPhoneBook =>{
               setPersons(persons.map(person => person.id !== newPhoneBook.id ? 
                 person : newPhoneBook))
+              console.log(persons)
               setMessageType('succeed')
               setErrorMessage(`${newName} added succesfully`)
             })
@@ -100,7 +99,7 @@ const App = () => {
             .catch(error => {
               setMessageType('error')
               setErrorMessage(error.message)})
-          }     
+          }
   }
 
   return (
