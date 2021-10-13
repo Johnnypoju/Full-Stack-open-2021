@@ -24,6 +24,7 @@ const App = () => {
         })
           .then(
             setErrorMessage('All names fetched'))
+          .then(console.log(persons))
           .catch(error => {
             setMessageType('error')
             setErrorMessage(error.message)
@@ -40,19 +41,20 @@ const App = () => {
       "name": newName,
       "number": newNumber
     }
+    
     const personId = persons.map(person => person.name).indexOf(newName)
     
     //If person is found in phonebook ask if can be replaced
     if (personId > -1){
       if (window.confirm(`${newName} is already added to the phonebook. 
       Do you want to replace the old number with a new one?`)){
+
         // replacing person from phonebook
         phonebookService
           .update(persons[personId].id, personsObject)
             .then(newPhoneBook =>{
-              console.log(newPhoneBook)
-              setPersons(persons.map(person => person.name !== newPhoneBook.name ? 
-                person : newPhoneBook))
+              console.log(persons.map(person => (person.id === newPhoneBook.id) ? person : newPhoneBook))
+              setPersons(persons.map(person => person.id !== newPhoneBook.id ? person : newPhoneBook))
               
               setMessageType('succeed')
               setErrorMessage(`${newName} added succesfully`)

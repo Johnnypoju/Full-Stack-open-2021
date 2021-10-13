@@ -12,6 +12,8 @@ const create = newObject => {
 }
 
 const update = (id, newObject) => {
+    console.log("phonebook service id: ",id)
+    console.log("phonebook service: ",newObject)
     const request = axios.put(`${baseUrl}/${id}`, newObject)
     return request.then(response => response.data)
 }
