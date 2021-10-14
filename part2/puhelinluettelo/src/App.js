@@ -43,21 +43,25 @@ const App = () => {
     }
     
     const personId = persons.map(person => person.name).indexOf(newName)
-    
+    let tempList = []
     //If person is found in phonebook ask if can be replaced
     if (personId > -1){
       if (window.confirm(`${newName} is already added to the phonebook. 
       Do you want to replace the old number with a new one?`)){
-
+        const tempPersonsObject = {
+          "name" : newName,
+          "number" : newNumber,
+          "id" : persons[personId].id
+        }
         // replacing person from phonebook
         phonebookService
-          .update(persons[personId].id, personsObject)
-            .then(newPhoneBook =>{
-              console.log(persons.map(person => (person.id === newPhoneBook.id) ? person : newPhoneBook))
-              setPersons(persons.map(person => person.id !== newPhoneBook.id ? person : newPhoneBook))
-              
+          .update(persons[personId].id, tempPersonsObject)
+            .then(newPhoneBook => {
+              console.log(newPhoneBook)
+              setPersons(persons.map(person => person.name !== newPhoneBook.name ? person : newPhoneBook))
               setMessageType('succeed')
               setErrorMessage(`${newName} added succesfully`)
+              
             })
             .catch(error => {
               // removing person from display if already removed
