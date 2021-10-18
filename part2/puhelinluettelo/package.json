@@ -15,7 +15,7 @@
   "scripts": {
     "start": "react-scripts start",
     "build": "react-scripts build",
-    "build:ui": "rmdir \"C:/Users/jsumusal/OneDrive - Turck Vilant Systems Oy/Documents/GitHub/Full-Stack-Open-Part3/build\" && cd ../puhelinluettelo && npm run build --prod && copy build \"C:/Users/jsumusal/OneDrive - Turck Vilant Systems Oy/Documents/GitHub/Full-Stack-Open-Part3/build\"",
+    "build:ui": "rmdir /s \"C:/Users/Jonde/Documents/GitHub/Full-Stack-Open-Part3/build\" && cd ../puhelinluettelo && npm run build --prod && Xcopy build \"C:/Users/Jonde/Documents/GitHub/Full-Stack-Open-Part3/build\" /E /H /C /I",
     "deploy": "git push heroku main",
     "deploy:full": "npm run build:ui && git add . && git commit -m uibuild && git push && npm run deploy",
     "logs:prod": "heroku logs --tail",

@@ -43,7 +43,6 @@ const App = () => {
     }
     
     const personId = persons.map(person => person.name).indexOf(newName)
-    let tempList = []
     //If person is found in phonebook ask if can be replaced
     if (personId > -1){
       if (window.confirm(`${newName} is already added to the phonebook. 
@@ -57,8 +56,7 @@ const App = () => {
         phonebookService
           .update(persons[personId].id, tempPersonsObject)
             .then(newPhoneBook => {
-              console.log(newPhoneBook)
-              setPersons(persons.map(person => person.name !== newPhoneBook.name ? person : newPhoneBook))
+              setPersons(persons.map(person => person.name !== newName ? person : tempPersonsObject))
               setMessageType('succeed')
               setErrorMessage(`${newName} added succesfully`)
               
