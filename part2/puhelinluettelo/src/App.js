@@ -80,7 +80,7 @@ const App = () => {
           })
           .catch(error => {
             setMessageType('error')
-            setErrorMessage(error.message)
+            setErrorMessage(error)
           })
     }
     setNewName('')
