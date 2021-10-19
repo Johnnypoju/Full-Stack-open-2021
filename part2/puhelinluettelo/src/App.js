@@ -27,7 +27,7 @@ const App = () => {
           .then(console.log(persons))
           .catch(error => {
             setMessageType('error')
-            setErrorMessage(error.message)
+            setErrorMessage(error.response.data.error)
           })
   }, [])
 
@@ -80,7 +80,7 @@ const App = () => {
           })
           .catch(error => {
             setMessageType('error')
-            setErrorMessage(error)
+            setErrorMessage(error.response.data.error)
           })
     }
     setNewName('')
@@ -104,7 +104,7 @@ const App = () => {
           setErrorMessage('Person deleted from phonebook')})
             .catch(error => {
               setMessageType('error')
-              setErrorMessage(error.message)})
+              setErrorMessage(error.response.data.error)})
           }
   }
 
