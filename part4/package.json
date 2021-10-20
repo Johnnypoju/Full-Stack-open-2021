@@ -1,0 +1,15 @@
+{
+  "name": "part4",
+  "version": "1.0.0",
+  "description": "part 4 tasks",
+  "main": "index.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "repository": {
+    "type": "git",
+    "url": "https://github.com/Johnnypoju/Full-Stack-open-2021/part4"
+  },
+  "author": "Joonas",
+  "license": "ISC"
+}
