@@ -7,6 +7,7 @@ const getAll = () => {
 }
 
 const create = newObject => {
+    console.log("creating entry")
     const request =  axios.post(baseUrl, newObject)
     return request.then(response => response.data)
 }
