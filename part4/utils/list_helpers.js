@@ -10,6 +10,18 @@ const totalLikes = (blogs) => {
     return likeSum
 }
 
+const favoriteBlog = (blogs) => {
+    let highestLikes = 0
+    let favoriteEntry = {}
+    for (const entry of blogs) {
+        if (entry.likes > highestLikes){
+            highestLikes = entry.likes
+            favoriteEntry = entry
+        }
+    }
+    return favoriteEntry
+ }
+
 module.exports = {
-    dummy, totalLikes
+    dummy, totalLikes, favoriteBlog
 }
