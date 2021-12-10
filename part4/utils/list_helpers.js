@@ -2,6 +2,21 @@ const dummy = (blogs) => {
     return 1
 }
 
+const initialBlog = [
+    {
+        title: 'Call of Cthulhu',
+        author: 'H.P. Lovercraft',
+        url: 'google.com',
+        likes: 9000
+    },
+    {
+        title: 'Harry Potter',
+        author: 'J.K. Rowling',
+        url: 'harry_potter.org',
+        likes: 1557
+    }
+]
+
 const totalLikes = (blogs) => {
     let likeSum = 0
     for (const entry of blogs) {
@@ -22,6 +37,8 @@ const favoriteBlog = (blogs) => {
     return favoriteEntry
  }
 
+
+ 
 module.exports = {
-    dummy, totalLikes, favoriteBlog
+    dummy, totalLikes, favoriteBlog, initialBlog
 }
