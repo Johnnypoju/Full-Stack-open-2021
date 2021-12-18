@@ -37,8 +37,12 @@ const favoriteBlog = (blogs) => {
     return favoriteEntry
  }
 
-
+ const usersInDb = async () => {
+    const users = await User.find({})
+    return users.map(u => u.toJSON())
+  }
+  
  
 module.exports = {
-    dummy, totalLikes, favoriteBlog, initialBlog
+    dummy, totalLikes, favoriteBlog, initialBlog, usersInDb
 }

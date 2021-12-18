@@ -1,4 +1,5 @@
 const blogRouter = require('./controllers/entries')
+const userRouter = require('./controllers/users')
 const config = require('./utils/config')
 const express = require('express')
 const app = express()
@@ -14,6 +15,7 @@ app.use(cors())
 app.use(express.json())
 
 app.use('/api/blogs', blogRouter)
+app.use('/api/users', userRouter)
 
 const errorHandler = (error, _request, response, next) => {
 

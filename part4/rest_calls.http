@@ -6,7 +6,8 @@ POST http://localhost:3001/api/blogs
 content-type: application/json
 
 {
-    "title": "Lord of the Rings",
-    "author": "J.R.R. Tolkien",
-    
+    "title": "Jaskan seikkailut",
+    "author": "J.H. Hukkareissu",
+    "url": "kuukkeli.com/hukkareissu",
+    "userId": "61b642ef6fd9e041ec4feb73"
 }

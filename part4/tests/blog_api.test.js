@@ -2,7 +2,6 @@ const mongoose = require('mongoose')
 const supertest = require('supertest')
 const list_helpers = require('../utils/list_helpers')
 const app = require('../app')
-
 const api = supertest(app)
 const Blog = require('../models/entry')
 const { info } = require('../utils/logger')
@@ -16,6 +15,7 @@ beforeEach(async () => {
     await Promise.all(promiseArray)
 })
 
+
 test('blogs are returned as json', async () => {
     await api
         .get('/api/blogs')
@@ -28,6 +28,9 @@ test('blogs contain id field', async () => {
 
     expect(response.body[0].id).toBeDefined()
 })
+
+
+
 
 test('add blog entries', async () => {
 
@@ -75,6 +78,46 @@ test('add malformed entry', async () => {
         .post('/api/blogs')
         .send(noUrl)
         .expect(400)
+        .expect('Content-Type', /application\/json/)
+
+})
+
+
+
+
+test('delete entry', async () => {
+
+    const entries = await api.get('/api/blogs')
+
+    const entryId = entries.body[0].id
+    const path = `/api/blogs/${entryId}`
+
+    await api
+        .delete(path)
+        .expect(200)
+        .expect('Content-Type', /application\/json/)
+
+    const response = await api.get('/api/blogs')
+
+    expect(response.body).toHaveLength(1)
+
+})
+
+test('increase likes', async () => {
+    
+    const entries = await api.get('/api/blogs')
+    
+
+    const entryId = entries.body[0].id
+    const path = `/api/blogs/${entryId}`
+
+    entries.body[0].likes = '100'
+    
+
+    await api
+        .put(path)
+        .send(entries.body[0])
+        .expect(200)
         .expect('Content-Type', /application\/json/)
 
 })
