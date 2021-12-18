@@ -14,16 +14,17 @@ blogRouters.get('/', async (request, response) => {
 blogRouters.post('/', async (request, response) => {
 
   const Blog = await new Entry(request.body)
-
+  
   const user = await User.findById(Blog.userId)
+  const blog = new Entry({
+    title: Blog.title,
+    author: Blog.author,
+    url: Blog.url,
+    userId: Blog.userId,
+    likes: Blog.likes === undefined ? 0 : Blog.likes
+  })
 
-  if (Blog.likes === undefined) {
-    Blog.likes = 0
-  }
-  logger.info(user)
-  Blog.user = user.id
-
-  const savedBlog = await Blog.save()
+  const savedBlog = await blog.save()
   user.blogs = user.blogs.concat(savedBlog._id)
   await user.save()
 

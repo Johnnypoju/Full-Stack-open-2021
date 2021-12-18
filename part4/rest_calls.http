@@ -6,8 +6,13 @@ POST http://localhost:3001/api/blogs
 content-type: application/json
 
 {
-    "title": "Jaskan seikkailut",
-    "author": "J.H. Hukkareissu",
-    "url": "kuukkeli.com/hukkareissu",
+    "title": "Arskan seikkailut",
+    "author": "R.A. Mbo",
+    "url": "ratatata.fi/arseikkailut",
     "userId": "61b642ef6fd9e041ec4feb73"
 }
+
+###
+
+GET http://localhost:3001/api/users
+Content-Type: application/json
