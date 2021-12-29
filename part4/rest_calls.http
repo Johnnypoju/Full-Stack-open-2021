@@ -4,10 +4,32 @@ GET http://localhost:3001/api/blogs
 
 POST http://localhost:3001/api/blogs
 content-type: application/json
+Authorization: bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ1c2VybmFtZSI6Ikpqb2t1bmVuIiwiaWQiOiI2MWNjYTUyNGMyNTdiNGU5OTEwZTAzZTgiLCJpYXQiOjE2NDA4MDM1MTd9.jDCDmxfH_OVKDg8ySeKcOopAkGSDbwI8z0HYjiNKt6I
 
 {
     "title": "Jaskan seikkailut",
     "author": "J.H. Hukkareissu",
     "url": "kuukkeli.com/hukkareissu",
-    "userId": "61b642ef6fd9e041ec4feb73"
+    "userId": "61cca524c257b4e9910e03e8"
+}
+
+####
+
+POST http://localhost:3001/api/users
+Content-Type: application/json
+
+{
+    "username": "Norppa",
+    "name" : "Noora Kauhanen",
+    "password" : "jo"
+}
+
+###
+
+POST http://localhost:3001/api/login
+Content-Type: application/json
+
+{
+    "username" : "Jjokunen",
+    "password" : "jokujannu"
 }

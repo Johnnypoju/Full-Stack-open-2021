@@ -3,24 +3,39 @@ require('express-async-errors')
 const Entry = require('../models/entry') 
 const User = require('../models/user')
 const logger = require('../utils/logger')
+const jwt = require('jsonwebtoken')
 
 //GET all blog entries
 blogRouters.get('/', async (request, response) => {
-  const blogs = await Entry.find({})
+  const blogs = await Entry.find({}).populate('userId', {username: 1, name: 1})
   response.json(blogs.map(blogs => blogs.toJSON()))  
   })
   
+const getTokenFrom = request => {
+  const authorization = request.get('authorization')
+  if (authorization && authorization.toLowerCase().startsWith('bearer ')) {
+    return authorization.substring(7)
+  }
+  return null
+}
+
 //POST a new blog entry
 blogRouters.post('/', async (request, response) => {
 
   const Blog = await new Entry(request.body)
+  
+  const token = getTokenFrom(request)
+  const decodedToken = jwt.verify(token, process.env.SECRET)
+  if (!token || !decodedToken.id) {
+    return response.status(401).json({ error : 'token missing or invalid'})
+  }
 
-  const user = await User.findById(Blog.userId)
+  const user = await User.findById(decodedToken.id)
 
   if (Blog.likes === undefined) {
     Blog.likes = 0
   }
-  logger.info(user)
+  
   Blog.user = user.id
 
   const savedBlog = await Blog.save()

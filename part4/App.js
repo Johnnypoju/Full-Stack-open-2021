@@ -6,6 +6,7 @@ const app = express()
 const cors = require('cors')
 const mongoose = require('mongoose')
 const logger = require('./utils/logger')
+const loginRouter = require('./controllers/login')
 
 
 
@@ -16,6 +17,7 @@ app.use(express.json())
 
 app.use('/api/blogs', blogRouter)
 app.use('/api/users', userRouter)
+app.use('/api/login', loginRouter)
 
 const errorHandler = (error, _request, response, next) => {
 
@@ -28,6 +30,18 @@ const errorHandler = (error, _request, response, next) => {
         console.log(error.message)
         return response.status(400).send({ error: error.message })
     }
+    else if (error.name === 'JsonWebTokenError') {
+        return response.status(401).json({
+            error : 'invalid token'
+        })
+    }
+    else if (error.name ===  'TokenExpiredError') {
+        return response.status(401).json({
+            error: 'token expired'
+        })
+    }
+
+    logger.error(error.message)
 
     next(error)
 }
