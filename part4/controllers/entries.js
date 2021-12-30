@@ -10,22 +10,13 @@ blogRouters.get('/', async (request, response) => {
   const blogs = await Entry.find({}).populate('userId', {username: 1, name: 1})
   response.json(blogs.map(blogs => blogs.toJSON()))  
   })
-  
-const getTokenFrom = request => {
-  const authorization = request.get('authorization')
-  if (authorization && authorization.toLowerCase().startsWith('bearer ')) {
-    return authorization.substring(7)
-  }
-  return null
-}
 
 //POST a new blog entry
 blogRouters.post('/', async (request, response) => {
-
+  
   const Blog = await new Entry(request.body)
   
-  const token = getTokenFrom(request)
-  const decodedToken = jwt.verify(token, process.env.SECRET)
+  const decodedToken = jwt.verify(request.token, process.env.SECRET)
   if (!token || !decodedToken.id) {
     return response.status(401).json({ error : 'token missing or invalid'})
   }
@@ -59,7 +50,7 @@ blogRouters.put('/:id', async (request, response) => {
 
   const entryBody = request.body
 
-  logger.info(entryBody)
+  //logger.info(entryBody)
 
   await Entry.findByIdAndUpdate(request.params.id, { likes : entryBody.likes})
   response.json(result => response.status(200).json(result))
