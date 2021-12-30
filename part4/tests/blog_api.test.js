@@ -37,7 +37,8 @@ test('add blog entries', async () => {
     const newEntry = {
         "title": "Lord of the Rings",
         "author": "J.R.R. Tolkien",
-        "url": "LOTR PWNS"
+        "url": "LOTR PWNS",
+        "userId": "61bdf2fa5fd491578b6276d8"
     }
 
     await api
