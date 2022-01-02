@@ -1,35 +1,42 @@
 GET http://localhost:3001/api/blogs
 
-###
+###blog api calls
 
 POST http://localhost:3001/api/blogs
 content-type: application/json
-Authorization: bearer $2b$10$y5RHTsnJFTbCctUgefZYOeb.NDqV20JkK4zVe1SIyT/m2AjJUoElq
+Authorization: bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ1c2VybmFtZSI6IlVra2VsaSIsImlkIjoiNjFkMWU2ZDZjOTM0M2NjZGQ1M2U0MmU1IiwiaWF0IjoxNjQxMTQ3Mjc0LCJleHAiOjE2NDExNTA4NzR9.Cv4bE9izY5cHEZBWrjoZYq4siYJbyoD0cVrqsy_q-4I
 
 {
-    "title": "Jaskan seikkailut",
+    "title": "Cthulhun seikkailut",
     "author": "J.H. Hukkareissu",
     "url": "kuukkeli.com/hukkareissu",
-    "userId": "61cca524c257b4e9910e03e8"
+    "userId": "61d1deabb443feec57a9d1b6"
 }
 
-####
+###
+
+DELETE http://localhost:3001/api/blogs/61d1eb3760ec0879fce8b1d7
+Authorization: bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ1c2VybmFtZSI6IlVra2VsaSIsImlkIjoiNjFkMWU2ZDZjOTM0M2NjZGQ1M2U0MmU1IiwiaWF0IjoxNjQxMTQ3Mjc0LCJleHAiOjE2NDExNTA4NzR9.Cv4bE9izY5cHEZBWrjoZYq4siYJbyoD0cVrqsy_q-4I
+
+####user calls 
 
 POST http://localhost:3001/api/users
 Content-Type: application/json
 
 {
-    "username": "Norppa",
+    "username": "Ukkeli",
     "name" : "Noora Kauhanen",
-    "password" : "jo"
+    "password" : "jook"
 }
 
-###
+###Login calls
 
 POST http://localhost:3001/api/login
 Content-Type: application/json
 
 {
-    "username" : "Jjokunen",
-    "password" : "jokujannu"
+    "username" : "Ukkeli",
+    "password" : "jook"
 }
+
+###

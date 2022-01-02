@@ -5,6 +5,8 @@ const app = require('../app')
 const api = supertest(app)
 const Blog = require('../models/entry')
 const { info } = require('../utils/logger')
+const { deleteOne } = require('../models/entry')
+let auth = {}
 
 beforeEach(async () => {
     await Blog.deleteMany({})
@@ -13,18 +15,31 @@ beforeEach(async () => {
         .map(blog => new Blog(blog))
     const promiseArray = blogObjects.map(blog => blog.save())
     await Promise.all(promiseArray)
+
+    const token = await api
+        .post('api/login')
+        .send({ "username":"root", "password":"sekret"})
+        .end((err, res) => {
+            console.log(res)
+        })
+
 })
 
 
+
 test('blogs are returned as json', async () => {
+    
     await api
         .get('/api/blogs')
+        .set('Authorization', `bearer ${auth.token}`)
         .expect(200)
         .expect('Content-Type', /application\/json/)
 })
 
 test('blogs contain id field', async () => {
-    const response = await api.get ('/api/blogs')
+    const response = await api
+        .get ('/api/blogs')
+        .set('Authorization', 'bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ1c2VybmFtZSI6IlVra2VsaSIsImlkIjoiNjFkMWU2ZDZjOTM0M2NjZGQ1M2U0MmU1IiwiaWF0IjoxNjQxMTQ3Mjc0LCJleHAiOjE2NDExNTA4NzR9.Cv4bE9izY5cHEZBWrjoZYq4siYJbyoD0cVrqsy_q-4I')
 
     expect(response.body[0].id).toBeDefined()
 })
@@ -43,6 +58,7 @@ test('add blog entries', async () => {
 
     await api
         .post('/api/blogs')
+        .set('Authorization', 'bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ1c2VybmFtZSI6IlVra2VsaSIsImlkIjoiNjFkMWU2ZDZjOTM0M2NjZGQ1M2U0MmU1IiwiaWF0IjoxNjQxMTQ3Mjc0LCJleHAiOjE2NDExNTA4NzR9.Cv4bE9izY5cHEZBWrjoZYq4siYJbyoD0cVrqsy_q-4I')
         .send(newEntry)
         .expect(200)
         .expect('Content-Type', /application\/json/)

@@ -3,7 +3,7 @@
 const getTokenFrom = async (request, response, next) => {
   const authorization = await request.get('authorization')
   if (authorization && authorization.toLowerCase().startsWith('bearer ')) {
-    request = {...request, token: authorization.substring(7)}
+    request.token = authorization.substring(7)
     
     next()
   }

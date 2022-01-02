@@ -8,6 +8,7 @@ const mongoose = require('mongoose')
 const logger = require('./utils/logger')
 const loginRouter = require('./controllers/login')
 const tokenExtractor = require('./utils/tokenExtractor')
+const userExtractor = require('./utils/userExtractor')
 
 
 
@@ -17,7 +18,7 @@ app.use(cors())
 app.use(express.json())
 
 app.use(tokenExtractor.getTokenFrom)
-app.use('/api/blogs', blogRouter)
+app.use('/api/blogs', userExtractor.getUserFrom, blogRouter)
 app.use('/api/users', userRouter)
 app.use('/api/login', loginRouter)
 
@@ -44,6 +45,11 @@ const errorHandler = (error, _request, response, next) => {
         
         return response.status(401).json({
             error: 'token expired'
+        })
+    }
+    else if (error.name === 'TypeError') {
+        return response.status(401).json({
+            error: 'Data could not be found'
         })
     }
     

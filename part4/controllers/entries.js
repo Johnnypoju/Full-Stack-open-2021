@@ -5,6 +5,7 @@ const User = require('../models/user')
 const logger = require('../utils/logger')
 const jwt = require('jsonwebtoken')
 
+
 //GET all blog entries
 blogRouters.get('/', async (request, response) => {
   const blogs = await Entry.find({}).populate('userId', {username: 1, name: 1})
@@ -16,21 +17,22 @@ blogRouters.post('/', async (request, response) => {
   
   const Blog = await new Entry(request.body)
   
-  const decodedToken = jwt.verify(request.token, process.env.SECRET)
-  if (!token || !decodedToken.id) {
+  //Check if token or user id present
+  if (!request.token || !request.user) {
     return response.status(401).json({ error : 'token missing or invalid'})
   }
 
-  const user = await User.findById(decodedToken.id)
-
+  const user = await User.findById(request.user)
+  
   if (Blog.likes === undefined) {
     Blog.likes = 0
   }
   
-  Blog.user = user.id
+  Blog.userId = request.user
 
   const savedBlog = await Blog.save()
   user.blogs = user.blogs.concat(savedBlog._id)
+  //logger.info(user)
   await user.save()
 
   response.json(savedBlog.toJSON())
@@ -39,9 +41,28 @@ blogRouters.post('/', async (request, response) => {
 
 //DELETE a blog entry by id
 blogRouters.delete('/:id', async (request, response) => {
+  
+  const blog = await Entry.findById(request.params.id)
+  
+  
+  const user = await User.findById(request.user)
+  
 
-  await Entry.findByIdAndRemove(request.params.id)
-  response.json(result => response.status(200).json(result))
+  if ( blog.userId.toString() != request.user ){
+    response.status(401).json({ error : 'User has no rights to perform operation'})
+  }
+  else {
+    blog.delete()
+  
+    const blogIndex = user.blogs.indexOf(blog.id)
+    user.blogs.splice(blogIndex, 1)
+    user.save()
+    logger.info(`Blog ${blog.title} has been deleted.`)
+    response.json(result => response.status(200).json(result))
+  }
+  
+  
+  
 
 })
 
