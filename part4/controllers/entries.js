@@ -19,6 +19,7 @@ blogRouters.post('/', async (request, response) => {
   
   //Check if token or user id present
   if (!request.token || !request.user) {
+    logger.info("401")
     return response.status(401).json({ error : 'token missing or invalid'})
   }
 

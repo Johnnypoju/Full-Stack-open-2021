@@ -1,15 +1,15 @@
 GET http://localhost:3001/api/blogs
+Authorization: bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ1c2VybmFtZSI6IlVra2VsaSIsImlkIjoiNjFkMWU2ZDZjOTM0M2NjZGQ1M2U0MmU1IiwiaWF0IjoxNjQxMjMxMjAzLCJleHAiOjE2NDEyMzQ4MDN9.002ZjJouMKGAsuKNxk5sziBbbTL4ob7c0dX80C0y-RU
 
 ###blog api calls
 
 POST http://localhost:3001/api/blogs
 content-type: application/json
-Authorization: bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ1c2VybmFtZSI6IlVra2VsaSIsImlkIjoiNjFkMWU2ZDZjOTM0M2NjZGQ1M2U0MmU1IiwiaWF0IjoxNjQxMTQ3Mjc0LCJleHAiOjE2NDExNTA4NzR9.Cv4bE9izY5cHEZBWrjoZYq4siYJbyoD0cVrqsy_q-4I
+Authorization: bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ1c2VybmFtZSI6IlVra2VsaSIsImlkIjoiNjFkMWU2ZDZjOTM0M2NjZGQ1M2U0MmU1IiwiaWF0IjoxNjQxMjMxMjAzLCJleHAiOjE2NDEyMzQ4MDN9.002ZjJouMKGAsuKNxk5sziBbbTL4ob7c0dX80C0y-RU
 
 {
     "title": "Cthulhun seikkailut",
     "author": "J.H. Hukkareissu",
-    "url": "kuukkeli.com/hukkareissu",
     "userId": "61d1deabb443feec57a9d1b6"
 }
 

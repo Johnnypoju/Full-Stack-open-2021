@@ -4,25 +4,30 @@ const list_helpers = require('../utils/list_helpers')
 const app = require('../app')
 const api = supertest(app)
 const Blog = require('../models/entry')
-const { info } = require('../utils/logger')
-const { deleteOne } = require('../models/entry')
-let auth = {}
+
+let token = ''
+let user = {}
+
+
+beforeAll(async () => {
+    const auth = await api.post('/api/login').send({"username":"root","password":"sekret"})
+    token = auth.body.token
+
+    user = await list_helpers.usersInDb()
+    
+})
 
 beforeEach(async () => {
     await Blog.deleteMany({})
     
     const blogObjects = list_helpers.initialBlog
-        .map(blog => new Blog(blog))
-    const promiseArray = blogObjects.map(blog => blog.save())
+        .map(blog => new Blog({...blog, userId: user[0].id}))
+    const promiseArray = blogObjects.map(async blog => {
+        await blog.save()
+    })
+    
     await Promise.all(promiseArray)
-
-    const token = await api
-        .post('api/login')
-        .send({ "username":"root", "password":"sekret"})
-        .end((err, res) => {
-            console.log(res)
-        })
-
+    
 })
 
 
@@ -31,7 +36,7 @@ test('blogs are returned as json', async () => {
     
     await api
         .get('/api/blogs')
-        .set('Authorization', `bearer ${auth.token}`)
+        .set('Authorization', `bearer ${token}`)
         .expect(200)
         .expect('Content-Type', /application\/json/)
 })
@@ -39,8 +44,7 @@ test('blogs are returned as json', async () => {
 test('blogs contain id field', async () => {
     const response = await api
         .get ('/api/blogs')
-        .set('Authorization', 'bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ1c2VybmFtZSI6IlVra2VsaSIsImlkIjoiNjFkMWU2ZDZjOTM0M2NjZGQ1M2U0MmU1IiwiaWF0IjoxNjQxMTQ3Mjc0LCJleHAiOjE2NDExNTA4NzR9.Cv4bE9izY5cHEZBWrjoZYq4siYJbyoD0cVrqsy_q-4I')
-
+        .set('Authorization', `bearer ${token}`)
     expect(response.body[0].id).toBeDefined()
 })
 
@@ -58,12 +62,12 @@ test('add blog entries', async () => {
 
     await api
         .post('/api/blogs')
-        .set('Authorization', 'bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ1c2VybmFtZSI6IlVra2VsaSIsImlkIjoiNjFkMWU2ZDZjOTM0M2NjZGQ1M2U0MmU1IiwiaWF0IjoxNjQxMTQ3Mjc0LCJleHAiOjE2NDExNTA4NzR9.Cv4bE9izY5cHEZBWrjoZYq4siYJbyoD0cVrqsy_q-4I')
+        .set('Authorization', `bearer ${token}`)
         .send(newEntry)
         .expect(200)
         .expect('Content-Type', /application\/json/)
 
-    const response = await api.get('/api/blogs')
+    const response = await api.get('/api/blogs').set('Authorization', `bearer ${token}`)
 
     const title = response.body.map( r => r.title)
     const author = response.body.map( r => r.author)
@@ -78,21 +82,25 @@ test('add blog entries', async () => {
 test('add malformed entry', async () => {
     const noTitle = {
         "author": "J.R.R. Tolkien",
-        "url": "LOTR PWNS"
+        "url": "LOTR PWNS",
+        
     }
     const noUrl = {
         "title": "Lord of the Rings",
         "author": "J.R.R. Tolkien",
+        "userId": user[0].id
     }
 
     await api
         .post('/api/blogs')
+        .set('Authorization', `bearer ${token}`)
         .send(noTitle)
         .expect(400)
         .expect('Content-Type', /application\/json/)
 
     await api
         .post('/api/blogs')
+        .set('Authorization', `bearer ${token}`)
         .send(noUrl)
         .expect(400)
         .expect('Content-Type', /application\/json/)
@@ -104,17 +112,19 @@ test('add malformed entry', async () => {
 
 test('delete entry', async () => {
 
-    const entries = await api.get('/api/blogs')
-
+    const entries = await api.get('/api/blogs').set('Authorization', `bearer ${token}`)
+    
+    
     const entryId = entries.body[0].id
     const path = `/api/blogs/${entryId}`
 
     await api
         .delete(path)
+        .set('Authorization', `bearer ${token}`)
         .expect(200)
         .expect('Content-Type', /application\/json/)
 
-    const response = await api.get('/api/blogs')
+    const response = await api.get('/api/blogs').set('Authorization', `bearer ${token}`)
 
     expect(response.body).toHaveLength(1)
 
@@ -122,9 +132,8 @@ test('delete entry', async () => {
 
 test('increase likes', async () => {
     
-    const entries = await api.get('/api/blogs')
+    const entries = await api.get('/api/blogs').set('Authorization', `bearer ${token}`)
     
-
     const entryId = entries.body[0].id
     const path = `/api/blogs/${entryId}`
 
@@ -133,6 +142,7 @@ test('increase likes', async () => {
 
     await api
         .put(path)
+        .set('Authorization', `bearer ${token}`)
         .send(entries.body[0])
         .expect(200)
         .expect('Content-Type', /application\/json/)

@@ -9,13 +9,15 @@ const initialBlog = [
     title: 'Call of Cthulhu',
     author: 'H.P. Lovercraft',
     url: 'google.com',
-    likes: 9000
+    likes: 9000,
+    userId:''
 },
 {
     title: 'Harry Potter',
     author: 'J.K. Rowling',
     url: 'harry_potter.org',
-    likes: 1557
+    likes: 1557,
+    userId:''
 }
 ]
 
@@ -44,9 +46,6 @@ const users = await User.find({})
 return users.map(u => u.toJSON())
 }
 
-const loginUser = async (auth) => {
-    
-}
  
 module.exports = {
     dummy, totalLikes, favoriteBlog, initialBlog, usersInDb
