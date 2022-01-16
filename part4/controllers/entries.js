@@ -16,10 +16,9 @@ blogRouters.get('/', async (request, response) => {
 blogRouters.post('/', async (request, response) => {
   
   const Blog = await new Entry(request.body)
-  
   //Check if token or user id present
   if (!request.token || !request.user) {
-    logger.info("401")
+    logger.error("401")
     return response.status(401).json({ error : 'token missing or invalid'})
   }
 
@@ -33,6 +32,7 @@ blogRouters.post('/', async (request, response) => {
 
   const savedBlog = await Blog.save()
   user.blogs = user.blogs.concat(savedBlog._id)
+  console.log(user.blogs)
   //logger.info(user)
   await user.save()
 

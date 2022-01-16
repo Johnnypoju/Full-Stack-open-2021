@@ -1,5 +1,5 @@
-GET http://localhost:3001/api/blogs
-Authorization: bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ1c2VybmFtZSI6IlVra2VsaSIsImlkIjoiNjFkMWU2ZDZjOTM0M2NjZGQ1M2U0MmU1IiwiaWF0IjoxNjQxMjMxMjAzLCJleHAiOjE2NDEyMzQ4MDN9.002ZjJouMKGAsuKNxk5sziBbbTL4ob7c0dX80C0y-RU
+GET http://localhost:3003/api/blogs
+Authorization: bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ1c2VybmFtZSI6Ik5vcnBwYSIsImlkIjoiNjFkMWM2NjczNzhkYzdmNTEyOTAzZDQ3IiwiaWF0IjoxNjQxNDA2NzQ3LCJleHAiOjE2NDE0MTAzNDd9.aaOpyFb0EWP6nE836nRakQDEgmbMU-Y2rVDlRxymS6A
 
 ###blog api calls
 
@@ -24,18 +24,18 @@ POST http://localhost:3001/api/users
 Content-Type: application/json
 
 {
-    "username": "Ukkeli",
+    "username": "Norppa",
     "name" : "Noora Kauhanen",
     "password" : "jook"
 }
 
 ###Login calls
 
-POST http://localhost:3001/api/login
+POST http://localhost:3003/api/login
 Content-Type: application/json
 
 {
-    "username" : "Ukkeli",
+    "username" : "Norppa",
     "password" : "jook"
 }
 
