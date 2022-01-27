@@ -10,6 +10,7 @@ const Togglable = (props) => {
     setVisible(!visible)
   }
 
+
   return (
     <div>
       <div style={hideWhenVisible}>

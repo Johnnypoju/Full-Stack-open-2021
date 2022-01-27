@@ -20,13 +20,13 @@ Authorization: bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ1c2VybmFtZSI6IlVra
 
 ####user calls 
 
-POST http://localhost:3001/api/users
+POST http://localhost:3003/api/users
 Content-Type: application/json
 
 {
-    "username": "Norppa",
-    "name" : "Noora Kauhanen",
-    "password" : "jook"
+    "username": "jonde",
+    "name" : "jonde sumusalo",
+    "password" : "asd"
 }
 
 ###Login calls

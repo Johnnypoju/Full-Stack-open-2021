@@ -8,8 +8,8 @@ const jwt = require('jsonwebtoken')
 
 //GET all blog entries
 blogRouters.get('/', async (request, response) => {
-  const blogs = await Entry.find({}).populate('userId', {username: 1, name: 1})
-  response.json(blogs.map(blogs => blogs.toJSON()))  
+  const blogs = await Entry.find({ userId : request.user}).populate('userId', {username: 1, name: 1})
+  response.json(blogs.map(blogs => blogs.toJSON()))
   })
 
 //POST a new blog entry

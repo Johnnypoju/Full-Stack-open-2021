@@ -14,7 +14,6 @@ const App = () => {
   const [username, setUsername] = useState('')
   const [password, setPassword] = useState('')
   const [user, setUser] = useState(null)
-  const [blogCreationVisible, setBlogCreationVisible] = useState(false)
   
 
   useEffect(() => {
@@ -23,20 +22,20 @@ const App = () => {
     if (loggedUserJSON) {
 
       const user = JSON.parse(loggedUserJSON)
-      console.log(user)
+      
       setUser(user)
       //Fetch blogs for current user
       blogService.getAll(user).then(userBlogs =>
         setBlogs( userBlogs )
       )
-      console.log(blogs)
+      
     }
   }, [])
 
   const handleLogin = async (event) => {
       event.preventDefault()
-      console.log('logging in with', username, password)
     try {
+      setBlogs([])
       const user = await loginService.login({
         username, password,
       })
@@ -95,21 +94,16 @@ const App = () => {
             </form>
     </div>
   )
-  
-  const blogCreationForm = () => {
-    
-      <Togglable buttonLabel='new blog'>
-        <BlogForm createBlog={blogCreation} />
-      </Togglable>  
-  }
-
 
   const blogForm = () => (
     <div>
       <h2>Blogs</h2>
       <p>{user.name} has logged in. <br></br><button onClick={handleLogout}>logout</button></p>
       <p>
-      {blogCreationForm()}
+      <Togglable buttonLabel='new blog'>
+        <BlogForm createBlog={blogCreation} />
+      </Togglable>
+      
       {blogs.map(blog =>
         <Blog key={blog.id} blog={blog} />
       )}
