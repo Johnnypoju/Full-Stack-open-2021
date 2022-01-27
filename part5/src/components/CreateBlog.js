@@ -1,21 +1,35 @@
-import React from 'react'
-import blogService from ''
+import React, {useState} from 'react'
 
+const BlogForm = ({ createBlog }) => {
+  
+  const [title, setTitle] = useState('')
+  const [url, setUrl] = useState('')
+  const [author, setAuthor] = useState('')
+   
+  const handleTitleChange = async (event) => {
+    setTitle(event.target.value)
+  }
 
+  const handleAuthorChange = async (event) => {
+    setAuthor(event.target.value)
+  }
 
+  const handleUrlChange = async (event) => {
+    setUrl(event.target.value)
+  }
 
-const createBlog = ({
-    handleBlogCreation,
-    handleTitleChange,
-    handleUrlChange,
-    handleAuthorChange,
-    user,
-    title,
-    author,
-    url
-}) => {
+  const handleBlogCreation = async (event) => {
+    event.preventDefault()
+    createBlog({
+      "title": title,
+      "author": author,
+      "url": url
+    })
 
-    
+    setAuthor('')
+    setTitle('')
+    setUrl('')
+  }
     return (
     <p>
     <h2>Create new Blog</h2>
@@ -50,4 +64,4 @@ const createBlog = ({
     )
 }
 
-export default createBlog
+export default BlogForm
