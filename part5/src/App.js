@@ -15,6 +15,7 @@ const App = () => {
   const [password, setPassword] = useState('')
   const [user, setUser] = useState(null)
   
+  
 
   useEffect(() => {
     const loggedUserJSON = window.localStorage.getItem('loggedBlogUser')
@@ -70,6 +71,7 @@ const App = () => {
 
   const increaseLikes = async (blogObject, blogId) => {
     await blogService.increaseLikes(blogObject, blogId, user)
+    console.log(blogObject.likes)
   }
 
   const loginForm = () => (

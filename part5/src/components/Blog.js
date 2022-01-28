@@ -12,16 +12,20 @@ const Blog = ({blog, likeIncrease}) => {
     setBlogVisible(!blogVisible)
   }
 
+  const incrementState = async () => {
+    setLikes(likes + 1 )
+  }
+
   const moreLikes = async (event) => {
-    event.preventDefault()
-    setLikes(likes+1)
-    await likeIncrease({
+    
+    likeIncrease({
       user: blog.userId._id,
-      likes: likes,
+      likes: likes+1,
       author: blog.author,
       title: blog.title,
       url: blog.url
     }, blog.id)
+    setLikes(likes + 1 )
   }
 
   const blogStyle = {
@@ -43,7 +47,7 @@ const Blog = ({blog, likeIncrease}) => {
     <div style={showWhenVisible}>
       <p onClick={changeVisibility}>{blog.title} {blog.author}</p>
       Url: {blog.url}<br></br>
-      likes: {blog.likes} <button onClick={moreLikes}>Likes</button><br></br>
+      likes: {blog.likes} <button onClick={moreLikes} >Likes</button><br></br>
       User: {blog.userId.name}
     </div>
   </div>
