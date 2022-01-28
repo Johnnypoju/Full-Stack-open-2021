@@ -61,9 +61,6 @@ blogRouters.delete('/:id', async (request, response) => {
     logger.info(`Blog ${blog.title} has been deleted.`)
     response.json(result => response.status(200).json(result))
   }
-  
-  
-  
 
 })
 
@@ -71,7 +68,7 @@ blogRouters.delete('/:id', async (request, response) => {
 blogRouters.put('/:id', async (request, response) => {
 
   const entryBody = request.body
-
+  logger.info('test')
   //logger.info(entryBody)
 
   await Entry.findByIdAndUpdate(request.params.id, { likes : entryBody.likes})

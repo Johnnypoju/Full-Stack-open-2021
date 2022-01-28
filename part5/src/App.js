@@ -68,6 +68,10 @@ const App = () => {
     await blogService.createBlog(blogObject, user)
   }
 
+  const increaseLikes = async (blogObject, blogId) => {
+    await blogService.increaseLikes(blogObject, blogId, user)
+  }
+
   const loginForm = () => (
     <div>
       <h2>Login</h2>
@@ -105,7 +109,7 @@ const App = () => {
       </Togglable>
       
       {blogs.map(blog =>
-        <Blog key={blog.id} blog={blog} />
+        <Blog key={blog.id} blog={blog} likeIncrease={increaseLikes} />
       )}
       </p>
     </div>
