@@ -1,23 +1,23 @@
-import React, { useState } from 'react'
+import React, { useEffect, useState } from 'react'
 
 
-const Blog = ({blog, likeIncrease}) => {
+const Blog = ({ blog, likeIncrease, deleteBlog }) => {
   const [blogVisible, setBlogVisible] = useState(false)
   const [likes, setLikes] = useState(blog.likes)
 
-  const hideWhenVisible = { display: blogVisible ? 'none' : ''}
-  const showWhenVisible = { display: blogVisible ? '' : 'none'}
+  const hideWhenVisible = { display: blogVisible ? 'none' : '' }
+  const showWhenVisible = { display: blogVisible ? '' : 'none' }
+
+  useEffect(() => {
+
+  })
 
   const changeVisibility = async () => {
     setBlogVisible(!blogVisible)
   }
 
-  const incrementState = async () => {
-    setLikes(likes + 1 )
-  }
-
   const moreLikes = async (event) => {
-    
+
     likeIncrease({
       user: blog.userId._id,
       likes: likes+1,
@@ -37,22 +37,25 @@ const Blog = ({blog, likeIncrease}) => {
     fontFamily: 'Times New Roman'
   }
 
-  
+  const handleDeletion = async (event) => {
+    deleteBlog(blog.id)
+  }
 
   return (
-  <div style={blogStyle}>
-    <div style={hideWhenVisible} onClick={changeVisibility}>
-      {blog.title} {blog.author}
-    </div>
-    <div style={showWhenVisible}>
-      <p onClick={changeVisibility}>{blog.title} {blog.author}</p>
+    <div style={blogStyle}>
+      <div style={hideWhenVisible} onClick={changeVisibility}>
+        {blog.title} {blog.author}
+      </div>
+      <div style={showWhenVisible}>
+        <p onClick={changeVisibility}>{blog.title} {blog.author}</p>
       Url: {blog.url}<br></br>
       likes: {blog.likes} <button onClick={moreLikes} >Likes</button><br></br>
-      User: {blog.userId.name}
+      User: {blog.userId.name}<br></br>
+        <button onClick={handleDeletion}>Delete entry</button>
+      </div>
     </div>
-  </div>
   )
-  
-  }
+
+}
 
 export default Blog

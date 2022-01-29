@@ -5,7 +5,12 @@ const User = require('../models/user')
 const logger = require('../utils/logger')
 const jwt = require('jsonwebtoken')
 
-
+const tokenCheck = async (request) => {
+  if (!request.token || !request.user) {
+    logger.error("401")
+    return response.status(401).json({ error : 'token missing or invalid'})
+  }
+}
 //GET all blog entries
 blogRouters.get('/', async (request, response) => {
   const blogs = await Entry.find({ userId : request.user}).populate('userId', {username: 1, name: 1})
@@ -16,11 +21,10 @@ blogRouters.get('/', async (request, response) => {
 blogRouters.post('/', async (request, response) => {
   
   const Blog = await new Entry(request.body)
+  console.log(request.user)
   //Check if token or user id present
-  if (!request.token || !request.user) {
-    logger.error("401")
-    return response.status(401).json({ error : 'token missing or invalid'})
-  }
+  
+  tokenCheck(request)
 
   const user = await User.findById(request.user)
   
@@ -32,7 +36,7 @@ blogRouters.post('/', async (request, response) => {
 
   const savedBlog = await Blog.save()
   user.blogs = user.blogs.concat(savedBlog._id)
-  console.log(user.blogs)
+  
   //logger.info(user)
   await user.save()
 
@@ -42,25 +46,23 @@ blogRouters.post('/', async (request, response) => {
 
 //DELETE a blog entry by id
 blogRouters.delete('/:id', async (request, response) => {
-  
+  logger.info("test")
   const blog = await Entry.findById(request.params.id)
   
   
   const user = await User.findById(request.user)
   
-
-  if ( blog.userId.toString() != request.user ){
-    response.status(401).json({ error : 'User has no rights to perform operation'})
-  }
-  else {
-    blog.delete()
   
-    const blogIndex = user.blogs.indexOf(blog.id)
-    user.blogs.splice(blogIndex, 1)
-    user.save()
-    logger.info(`Blog ${blog.title} has been deleted.`)
-    response.json(result => response.status(200).json(result))
-  }
+
+  const tokenVerify = await tokenCheck(request)
+  
+  blog.delete()
+
+  const blogIndex = user.blogs.indexOf(blog.id)
+  user.blogs.splice(blogIndex, 1)
+  user.save()
+  logger.info(`Blog ${blog.title} has been deleted.`)
+  response.json(result => response.status(200).json(result))
 
 })
 
@@ -68,11 +70,12 @@ blogRouters.delete('/:id', async (request, response) => {
 blogRouters.put('/:id', async (request, response) => {
 
   const entryBody = request.body
-  logger.info('test')
+  
   //logger.info(entryBody)
 
-  await Entry.findByIdAndUpdate(request.params.id, { likes : entryBody.likes})
-  response.json(result => response.status(200).json(result))
+  const updatedBlog = await Entry.findByIdAndUpdate(request.params.id, { likes : entryBody.likes})
+  logger.info(updatedBlog)
+  response.status(200).json(updatedBlog.toJSON())
 })
 
 module.exports = blogRouters
