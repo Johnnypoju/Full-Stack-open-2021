@@ -13,7 +13,7 @@ const tokenCheck = async (request) => {
 }
 //GET all blog entries
 blogRouters.get('/', async (request, response) => {
-  const blogs = await Entry.find({ userId : request.user}).populate('userId', {username: 1, name: 1})
+  const blogs = await Entry.find({}).populate('userId', {username: 1, name: 1})
   response.json(blogs.map(blogs => blogs.toJSON()))
   })
 
