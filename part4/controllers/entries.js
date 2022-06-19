@@ -2,7 +2,7 @@ const blogRouters = require('express').Router()
 require('express-async-errors')
 const Entry = require('../models/entry') 
 const User = require('../models/user')
-const logger = require('../utils/logger')
+const logger = require('../../../Weeklyrecipes/weeklyrecipesfrontend/utils/logger')
 const jwt = require('jsonwebtoken')
 
 const tokenCheck = async (request) => {

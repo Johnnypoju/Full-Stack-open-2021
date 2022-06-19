@@ -1,7 +1,7 @@
 const app = require('./App')
 const http = require('http')
-const config = require('./utils/config')
-const logger = require('./utils/logger')
+const config = require('../../Weeklyrecipes/weeklyrecipesfrontend/utils/config')
+const logger = require('../../Weeklyrecipes/weeklyrecipesfrontend/utils/logger')
 
 const server = http.createServer(app)
 
