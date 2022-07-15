@@ -9,28 +9,20 @@ const Notification = () => {
     padding: 10,
     borderWidth: 1
   }
-  console.log(notification)
-  if (notification.notification === []) {
+  
+  if (notification.length === 0) {
     console.log("Empty")
     console.log(notification)
     return <div></div>
   }
-  else if(notification.type === 'vote') {
+  else {
     console.log("content")
-    console.log(notification.content)
+    console.log(notification)
     return (
     <div style={style}>
-      You voted for "{notification.content}".
+      {notification}
     </div>
   )
-  }
-  else if(notification.type === 'creation') {
-    console.log('created ', notification.content)
-    return(
-      <div style={style}>
-        Anecdote "{notification.content}" created succesfully.
-      </div>
-    )
   }
 }
 
