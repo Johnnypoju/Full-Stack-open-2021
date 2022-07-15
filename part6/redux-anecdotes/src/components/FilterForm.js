@@ -1,13 +1,12 @@
-import { useDispatch } from "react-redux"
+import { connect } from "react-redux"
 import { setFilter } from "../reducers/filterReducer"
 
 
-const FilterForm = () => {
-    const dispatch = useDispatch()
+const FilterForm = (props) => {
     
     const handleChange = (event) => {
       // input-kentän arvo muuttujassa event.target.value
-      dispatch(setFilter(event.target.value))
+      props.setFilter(event.target.value)
 
     }
     const style = {
@@ -20,5 +19,14 @@ const FilterForm = () => {
       </div>
     )
   }
+
+  const mapDispatchToProps = {
+    setFilter
+  }
+
+  const ConnectedFilters = connect(
+    null,
+    mapDispatchToProps
+    )(FilterForm)
   
-  export default FilterForm
+  export default ConnectedFilters
