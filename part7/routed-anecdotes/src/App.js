@@ -1,6 +1,7 @@
 import { set } from 'mongoose'
 import { useState } from 'react'
 import { Routes, Route, Link, useNavigate, useMatch } from "react-router-dom"
+import { useField } from './hooks'
 
 const AnecdoteList = ({ anecdotes }) => (
   <div>
@@ -50,22 +51,31 @@ const Footer = () => (
 
 
 const CreateNew = (props) => {
-  const [content, setContent] = useState('')
-  const [author, setAuthor] = useState('')
-  const [info, setInfo] = useState('')
+
   const navigate = useNavigate()
 
+  const content = useField('content')
+  const author = useField('author')
+  const info = useField('info')
 
   const handleSubmit = (e) => {
     e.preventDefault()
+    
     props.addNew({
-      content,
-      author,
-      info,
+      content:content.value,
+      author: author.value,
+      info: info.value,
       votes: 0
-    })
+  })
     navigate("/")
-    props.notificationSet(`A new anecdote ${content} has been created!`, 5000)
+    props.notificationSet(`A new anecdote ${content.value} has been created!`, 5000)
+  }
+
+  const resetFields = (e) => {
+    e.preventDefault()
+    content.reset()
+    author.reset()
+    info.reset()
   }
 
   return (
@@ -74,17 +84,18 @@ const CreateNew = (props) => {
       <form onSubmit={handleSubmit}>
         <div>
           content
-          <input name='content' value={content} onChange={(e) => setContent(e.target.value)} />
+          <input {...content}/>
         </div>
         <div>
           author
-          <input name='author' value={author} onChange={(e) => setAuthor(e.target.value)} />
+          <input {...author} />
         </div>
         <div>
           url for more info
-          <input name='info' value={info} onChange={(e)=> setInfo(e.target.value)} />
+          <input {...info} />
         </div>
         <button>create</button>
+        <button onClick={resetFields}>reset</button>
       </form>
     </div>
   )
@@ -139,7 +150,9 @@ const App = () => {
 
   const addNew = (anecdote) => {
     anecdote.id = Math.round(Math.random() * 10000)
+    console.log(anecdote)
     setAnecdotes(anecdotes.concat(anecdote))
+    console.log(anecdotes)
   }
 
   const anecdoteById = (id) =>
