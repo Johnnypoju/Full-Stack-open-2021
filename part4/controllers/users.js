@@ -2,7 +2,7 @@ const userRouters = require('express').Router()
 require('express-async-errors')
 const bcrypt = require('bcrypt')
 const User = require('../models/user') 
-const logger = require('../../../Weeklyrecipes/weeklyrecipesfrontend/utils/logger')
+const logger = require('../utils/logger')
 
 userRouters.post('/', async (request, response) => {
 

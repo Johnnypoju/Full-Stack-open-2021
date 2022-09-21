@@ -1,14 +1,14 @@
 const blogRouter = require('./controllers/entries')
 const userRouter = require('./controllers/users')
-const config = require('../../Weeklyrecipes/weeklyrecipesfrontend/utils/config')
 const express = require('express')
 const app = express()
 const cors = require('cors')
 const mongoose = require('mongoose')
-const logger = require('../../Weeklyrecipes/weeklyrecipesfrontend/utils/logger')
+const logger = require('./utils/logger')
 const loginRouter = require('./controllers/login')
-const tokenExtractor = require('../../Weeklyrecipes/weeklyrecipesfrontend/utils/tokenExtractor')
-const userExtractor = require('../../Weeklyrecipes/weeklyrecipesfrontend/utils/userExtractor')
+const config = require('./utils/config')
+const tokenExtractor = require('./utils/tokenExtractor')
+const userExtractor = require('./utils/userExtractor')
 
 
 
