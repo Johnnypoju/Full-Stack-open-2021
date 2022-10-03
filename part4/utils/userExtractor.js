@@ -1,15 +1,14 @@
-const jwt = require('jsonwebtoken')
+const jwt = require("jsonwebtoken")
 
-const getUserFrom = async (request,response, next) => {
-    const user = request.token
-    const decodedToken = jwt.verify(user, process.env.SECRET)
+const getUserFrom = async (request, response, next) => {
+	const user = request.token
+	const decodedToken = jwt.verify(user, process.env.SECRET)
 
-    request.user = decodedToken.id
+	request.user = decodedToken.id
 
-    next()
-
+	next()
 }
 
-module.exports = { 
-    getUserFrom : getUserFrom 
+module.exports = {
+	getUserFrom: getUserFrom,
 }
