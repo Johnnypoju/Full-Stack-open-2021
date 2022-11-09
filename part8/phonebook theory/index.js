@@ -74,8 +74,10 @@ const resolvers = {
                 args.phone === 'YES' ? person.phone : !person.phone
             return(persons.filter(byPhone))
         },
-        findPerson: (root, args) => 
-            persons.find(p => p.name === args.name)
+        findPerson: (root, args) => {
+            console.log(args)
+            return persons.find(p => p.name === args.name)
+        }
     },
     Person: {
         address: ( { street, city }) => {
