@@ -3,5 +3,5 @@
 	"useTabs": true,
 	"bracketSpacing": true,
 	"semi": false,
-	"endOfLine": "lf"
+	"endOfLine": "crlf"
 }
