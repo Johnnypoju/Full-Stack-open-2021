@@ -11,6 +11,13 @@ body {
     font-family: source-code-pro, Menlo, Monaco, Consolas, 'Courier New',
       monospace;
   }
+
+  table, td:nth-child(even) {
+    border: 1px solid black;
+    border-collapse: collapse;
+    padding: 10px;
+    background-color: #D6EEEE;
+  }
   
   .blog {
     padding: 10px;
@@ -34,4 +41,17 @@ body {
     border-style: solid;
     border-radius: 5px;
     margin-bottom: 10px;
+  }
+
+  .Link {
+    margin-right: 10px;
+  }
+
+  .header {
+    background-color: gray;
+    padding-left: 10px;
+  }
+
+  .table {
+    border: 1px solid black;
   }

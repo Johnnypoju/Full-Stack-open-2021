@@ -1,11 +1,15 @@
 import React, { useEffect } from 'react'
-import Togglable from './Togglable'
-import ShowBlogDetail from './ShowBlogDetail'
+import { useSelector } from 'react-redux'
+import { Link } from 'react-router-dom'
 
-const Blog = ({ blog, likeIncrease, deleteBlog }) => {
+
+
+
+const Blog = () => {
+  const selector = useSelector(state => state)
+
 
   useEffect(() => {
-
   })
 
   const blogStyle = {
@@ -17,16 +21,25 @@ const Blog = ({ blog, likeIncrease, deleteBlog }) => {
     fontFamily: 'Times New Roman'
   }
 
-
+  console.log(selector)
   return (
-    <li style={blogStyle}>
-      {blog.title} {blog.author}
-      <Togglable buttonLabel='asd'>
-        <ShowBlogDetail blog={blog} likeIncrease={likeIncrease} deleteBlog={deleteBlog} />
-      </Togglable>
-    </li>
+    <div>
+      <table>
+        <tobody>
+          <th>Title</th>
+          <th>Author</th>
+          {selector.blogs.map( blog =>
+            <tr style={blogStyle} key={blog.id}>
+              {console.log(blog.id)}
+              <td><Link to={`/blogs/${blog.id}`}>{blog.title}</Link></td>
+              <td>{blog.author}</td>
+            </tr>)}
+        </tobody>
+      </table>
+    </div>
   )
 
 }
+
 
 export default Blog

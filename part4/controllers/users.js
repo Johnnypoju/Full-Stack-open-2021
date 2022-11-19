@@ -31,4 +31,10 @@ userRouters.get("/", async (request, response) => {
 	response.json(users.map((u) => u.toJSON()))
 })
 
+userRouters.get("/userlist", async (request, response) => {
+	console.log('test')
+	const users = await User.find()
+	response.json(users.map((obj) => obj.toJSON()))
+} )
+
 module.exports = userRouters

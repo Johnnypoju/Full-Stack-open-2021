@@ -4,6 +4,7 @@ const Entry = require("../models/entry")
 const User = require("../models/user")
 const logger = require("../utils/logger")
 const jwt = require("jsonwebtoken")
+const { request } = require("express")
 
 const tokenCheck = async (request) => {
 	if (!request.token || !request.user) {
@@ -47,7 +48,7 @@ blogRouters.post("/", async (request, response) => {
 
 //DELETE a blog entry by id
 blogRouters.delete("/:id", async (request, response) => {
-	logger.info("test")
+	console.log(request.params)
 	const blog = await Entry.findById(request.params.id)
 
 	const user = await User.findById(request.user)
@@ -74,6 +75,18 @@ blogRouters.put("/:id", async (request, response) => {
 	})
 	logger.info(updatedBlog)
 	response.status(200).json(updatedBlog.toJSON())
+})
+
+blogRouters.post("/:id/comments", async (request, response) => {
+	const entryBody = request.body
+	logger.info(entryBody)
+
+	const updatedBlog = await Entry.findByIdAndUpdate(request.params.id, {
+		comments: entryBody.comments
+	})
+
+	logger.info(updatedBlog)
+	response.status(200)
 })
 
 module.exports = blogRouters
