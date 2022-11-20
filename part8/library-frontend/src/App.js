@@ -13,8 +13,8 @@ const App = () => {
   const [ errorMessage, setErrorMessage ] = useState(null)
   const [ token, setToken] = useState(null)
 
-  const authors = useQuery(ALL_AUTHORS)
-  const books = useQuery(ALL_BOOKS)
+  let authors = useQuery(ALL_AUTHORS)
+  let books = useQuery(ALL_BOOKS)
   const client = useApolloClient()
   console.log(books.data)
 
@@ -27,6 +27,12 @@ const App = () => {
 
   if (authors.loading) {
     return <div>loading...</div> 
+  }
+  if (!authors) {
+    authors = [{ name: "asd",
+  born: "1988",
+  bookCount: 2}]
+  books = {}
   }
 
   const logout = () => {
@@ -42,11 +48,11 @@ const App = () => {
       <div>
         <button onClick={() => setPage('authors')}>authors</button>
         <button onClick={() => setPage('books')}>books</button>
-        <Togglable token={token} setPage={setPage} logout={logout}/> 
+        <Togglable token={token} setPage={setPage} logout={logout} buttons={true}/> 
         
       </div>
       <Notify errorMessage={errorMessage}/>
-      <Authors show={page === 'authors'} authors={authors.data} notify={notify}/>
+      <Authors show={page === 'authors'} authors={authors.data} notify={notify} token={token}/>
 
       <Books show={page === 'books'} books={books.data}/>
 

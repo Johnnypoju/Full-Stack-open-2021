@@ -1,7 +1,13 @@
+import { useState } from 'react'
+
 const Books = (props) => {
+  const [ filter, setFilter ] = useState('')
+  
   if (!props.show) {
     return null
   }
+
+  
   console.log()
   const books = props.books.allBooks
 

@@ -1,11 +1,9 @@
 import { useMutation } from "@apollo/client"
-import { useState } from "react"
 import { ALL_AUTHORS, EDIT_AUTHOR } from "./queries"
-import Select from 'react-select'
+import Togglable from "./Togglable"
 
 const Authors = (props) => {
-  const [ name, setName ] = useState('')
-  const [ born, setBorn ] = useState('')
+
   const [ authorMutation ] = useMutation(EDIT_AUTHOR, {
     refetchQueries: [{ query: ALL_AUTHORS }]
   })
@@ -21,12 +19,7 @@ const Authors = (props) => {
       
     )
 
-  const submit = async (event) => {
-    event.preventDefault()
-    
-    authorMutation({ variables: { name, born } })
-
-  }
+  
 
 
   return (
@@ -48,18 +41,7 @@ const Authors = (props) => {
           ))}
         </tbody>
       </table>
-      <h2>Set birthyear</h2>
-      <form onSubmit={submit}>
-        name
-        <Select options={authorOptions}
-                onChange={(target) => setName(target.value)}/><br></br>
-        born
-        <input
-          value={born}
-          onChange={({target}) => setBorn(target.value)}
-        /><br></br>
-        <button type="submit">update author</button>
-      </form>
+      <Togglable authorMutation={authorMutation} authorOptions={authorOptions} token={props.token} button={false}/>
     </div>
   )
 }
