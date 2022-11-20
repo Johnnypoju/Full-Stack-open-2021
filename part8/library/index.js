@@ -115,6 +115,8 @@ const resolvers = {
         addBook: async (root, args, context) =>  {
           let authorID = null
           const currentUser = context.currentUser
+          let savedAuthor = ''
+
           if (!currentUser) {
             throw new AuthenticationError("Not authenticated")
           }
@@ -123,7 +125,7 @@ const resolvers = {
                 
                 const newAuthor = new authorSchema({ name: args.author, born: null, bookCount: 1 })
                 try {
-                  const savedAuthor = await newAuthor.save()
+                  savedAuthor = await newAuthor.save()
                 } catch (error) {
                   console.log(error)
                   if(error.errors.name.kind === "required") {
@@ -162,14 +164,15 @@ const resolvers = {
             
             return populatedBook
         },
-        editAuthor: async (root, args) => {
+        editAuthor: async (root, args, context) => {
             const currentUser = context.currentUser
+            
             if (!currentUser) {
               throw new AuthenticationError("Not authenticated")
             }
             const author = await authorSchema.findOne({ name: args.name})
             author.born = args.born
-            console.log(args)
+            //console.log(args)
 
             if (!author) {
                 return null
@@ -177,7 +180,7 @@ const resolvers = {
 
             return author.save()
         },
-        createUser: async (root, args) => {
+        createUser: async (root, args, context) => {
           const user = new User({ username: args.username, favouriteGenre: args.favouriteGenre })
 
           return user.save()
