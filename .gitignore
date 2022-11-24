@@ -5,6 +5,7 @@ part2/node_modules/puhelinluettelo/src/App.js
 part2/node_modules/puhelinluettelo/src/components/PersonList.js
 part2/node_modules/puhelinluettelo/src/services/phonebook.js
 part2/puhelinluettelo/db.json
+part8/library/.env
 part4/.env
 node_modules
 node_modules
