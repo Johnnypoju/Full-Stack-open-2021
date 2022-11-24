@@ -11,7 +11,7 @@ const Authors = (props) => {
   if (!props.show) {
     return null
   }
-  console.log(props.authors)
+  
   const authors = props.authors.allAuthors
   const authorOptions = authors.map((a) => (
     ({value: a.name, label: a.name})
@@ -41,7 +41,7 @@ const Authors = (props) => {
           ))}
         </tbody>
       </table>
-      <Togglable authorMutation={authorMutation} authorOptions={authorOptions} token={props.token} button={false}/>
+      <Togglable authorMutation={authorMutation} authorOptions={authorOptions} button={false}/>
     </div>
   )
 }

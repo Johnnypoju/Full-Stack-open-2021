@@ -1,22 +1,40 @@
 import { useState } from 'react'
-import { useApolloClient, useQuery }  from '@apollo/client'
-import { ALL_AUTHORS, ALL_BOOKS } from './components/queries'
+import { useApolloClient, useQuery, useSubscription }  from '@apollo/client'
+import { ALL_AUTHORS, ALL_BOOKS, BOOK_ADDED } from './components/queries'
 import Notify from './components/Notify'
 import Authors from './components/Authors'
 import Books from './components/Books'
 import NewBook from './components/NewBook'
 import Login from './components/Login'
 import Togglable from './components/Togglable'
+import Recommend from './components/Recommend'
+import { updateCache } from './components/updateCache'
 
 const App = () => {
   const [page, setPage] = useState('authors')
   const [ errorMessage, setErrorMessage ] = useState(null)
   const [ token, setToken] = useState(null)
+  let genres = []
 
-  let authors = useQuery(ALL_AUTHORS)
-  let books = useQuery(ALL_BOOKS)
+  
+  const authors = useQuery(ALL_AUTHORS)
+  const books = useQuery(ALL_BOOKS)
+  
+  
   const client = useApolloClient()
-  console.log(books.data)
+
+
+  if (books.data) {
+    if (books.data.allBooks) {
+      const booksFiltered = books.data.allBooks.filter((book) => 
+      book.genres.length 
+    )
+    const genresDuplicate = booksFiltered.map((book, index) => book.genres).flat()
+    genres = (genresDuplicate.filter((genre, index) => genresDuplicate.indexOf(genre) === index))
+    
+    }
+  }
+  
 
   const notify = (message) => {
     setErrorMessage(message)
@@ -25,22 +43,27 @@ const App = () => {
     }, 10000)
   }
 
+  useSubscription(BOOK_ADDED, {
+    onData: ({ data }) => {
+      const addBook = data.data.bookAdded
+      notify(`${addBook.title} added`)
+      
+      updateCache(client.cache, { query: ALL_BOOKS}, addBook)
+    }
+  })
+
   if (authors.loading) {
     return <div>loading...</div> 
   }
-  if (!authors) {
-    authors = [{ name: "asd",
-  born: "1988",
-  bookCount: 2}]
-  books = {}
-  }
-
+  console.log(books.data)
   const logout = () => {
     setToken(null)
     localStorage.clear()
     client.resetStore()
+    setPage('authors')
   }
-  console.log(token)
+  
+  
 
   //Add Toggle function for buttons
   return (
@@ -52,13 +75,16 @@ const App = () => {
         
       </div>
       <Notify errorMessage={errorMessage}/>
-      <Authors show={page === 'authors'} authors={authors.data} notify={notify} token={token}/>
+      <Authors show={page === 'authors'} authors={authors.data} notify={notify} />
 
-      <Books show={page === 'books'} books={books.data}/>
+      <Books show={page === 'books'} client={client} genres={genres}/>
 
       <NewBook show={page === 'add'} notify={notify}/>
 
       <Login show={page === 'login'} notify={notify} setToken={setToken} setError={notify} setPage={setPage}/>
+
+      <Recommend show={page === 'recommend'} notify={notify} />
+    
     </div>
   )
 }

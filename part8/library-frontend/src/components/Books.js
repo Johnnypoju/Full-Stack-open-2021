@@ -1,16 +1,23 @@
-import { useState } from 'react'
+import { useEffect, useState } from 'react'
+import { useQuery } from '@apollo/client'
+import { ALL_BOOKS } from './queries'
 
 const Books = (props) => {
-  const [ filter, setFilter ] = useState('')
+
   
+  const { data, refetch } = useQuery(ALL_BOOKS)
+
   if (!props.show) {
     return null
   }
 
-  
-  console.log()
-  const books = props.books.allBooks
 
+
+  const filterSet = async ({ genre } ) => {
+    //localStorage.setItem('book-genre-filter', genre)
+    
+    await refetch({ genre: genre})
+  }
   return (
     <div>
       <h2>books</h2>
@@ -22,7 +29,7 @@ const Books = (props) => {
             <th>author</th>
             <th>published</th>
           </tr>
-          {books.map((a) => (
+          {data.allBooks.map((a) => (
             <tr key={a.title}>
               <td>{a.title}</td>
               <td>{a.author.name}</td>
@@ -31,6 +38,12 @@ const Books = (props) => {
           ))}
         </tbody>
       </table>
+      {props.genres.map((genre) => (
+          <button key={genre} onClick={() => filterSet({ genre })}>{genre}</button>
+        
+      )
+      )}
+      <button onClick={() => filterSet('')}>All genres</button>
     </div>
   )
 }

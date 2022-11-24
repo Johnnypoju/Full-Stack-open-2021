@@ -4,6 +4,8 @@ import { useState } from 'react'
 const Togglable = (props) => {
     const [ name, setName ] = useState('')
     const [ born, setBorn ] = useState('')
+    const token = localStorage.getItem("site-user-token")
+
     const submit = async (event) => {
         event.preventDefault()
         
@@ -12,10 +14,11 @@ const Togglable = (props) => {
       }
 
     if (props.buttons === true) {
-            if(props.token){
+            if(token){
                 return(
                     <>
                         <button onClick={() => props.setPage('add')}>add book</button>
+                        <button onClick={() => props.setPage('recommend')}>recommend</button>
                         <button onClick={props.logout}>logout</button>
                     </>
                 )
@@ -27,7 +30,7 @@ const Togglable = (props) => {
         
     }
     else {
-        if (props.token) {
+        if (token) {
             return (
                 <div>
                     <h2>Set birthyear</h2>
