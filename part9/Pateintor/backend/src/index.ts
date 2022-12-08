@@ -14,9 +14,9 @@ app.get('/api/ping', (_req, res) => {
   console.log('someone pinged here');
   res.status(200).send('pong');
 });
-
+//interface for diagnose data
 app.use('/api/diagnoses', diagnoseRouter);
-
+//interface for patient data and adding new patient entries
 app.use('/api/patients', patientRouter);
 
 app.listen(PORT, () => {
