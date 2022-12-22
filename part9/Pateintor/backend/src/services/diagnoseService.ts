@@ -5,8 +5,4 @@ const getEntries = (): Array<Diagnoses> => {
     return diagnoseData;
 };
 
-const addDiagnose = () => {
-    return null
-}
-
-export default { getEntries, addDiagnose };
+export default { getEntries };

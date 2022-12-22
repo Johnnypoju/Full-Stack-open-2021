@@ -1,19 +1,15 @@
-import { CourseParts } from "../types";
+import { CoursePart } from "../data";
+import Part from "./Part";
 
-const Content = ({courseParts}: {courseParts: Array<CourseParts>}) => {
-    return (
-    <div>
-        <p>
-            {courseParts[0].name} {courseParts[0].exerciseCount}
-        </p>
-        <p>
-            {courseParts[1].name} {courseParts[1].exerciseCount}
-        </p>
-        <p>
-            {courseParts[2].name} {courseParts[2].exerciseCount}
-        </p>
-    </div>
-    )
-};
-
+const Content = ({courseParts}: {courseParts: Array<CoursePart>}): JSX.Element => {
+    if (!courseParts){
+        return <div> </div>
+    }
+    console.log(courseParts.map((data) => data))
+    return <div>{courseParts.map((data) => {
+        
+        return <Part key={data.name} coursePart={data}/>
+    }
+    )}</div>
+}
 export default Content;
