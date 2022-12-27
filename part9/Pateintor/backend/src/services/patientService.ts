@@ -13,6 +13,7 @@ const getEntries = (): Array<PatientsWithoutSsn> => {
             dateOfBirth: data.dateOfBirth,
             gender: data.gender,
             occupation: data.occupation,
+            entries: data.entries
         }})
     return filteredPatients;
 }
@@ -24,10 +25,28 @@ const addPatient = ( object: NewPatientEntry ): Patients => {
         dateOfBirth: object.dateOfBirth,
         ssn: object.ssn,
         gender: object.gender,
-        occupation: object.occupation
+        occupation: object.occupation,
+        entries: object.entries
     }
     patientData.push(newPatientEntry)
     return newPatientEntry
 }
 
-export default { getEntries, addPatient}
+const getPatient = ( patient: string): Patients => {
+    const patientInfo = <Patients>patientData.find((data) => data.id === patient)
+    if (!patientInfo.entries) {
+    const patientInfoWithEntries = {
+        id: patientInfo.id,
+        name: patientInfo.name,
+        dateOfBirth: patientInfo.dateOfBirth,
+        ssn: patientInfo.ssn,
+        gender: patientInfo.gender,
+        occupation: patientInfo.occupation,
+        entries: [ ]
+    };
+    return patientInfoWithEntries;
+    };
+    return patientInfo;
+}
+
+export default { getEntries, addPatient, getPatient}

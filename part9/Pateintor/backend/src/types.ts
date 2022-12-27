@@ -1,4 +1,8 @@
 
+export interface Entry {
+    
+}
+
 export interface Diagnoses {
     code: string,
     name: string,
@@ -11,7 +15,8 @@ export interface Patients {
     dateOfBirth: string,
     gender: Gender,
     occupation: string,
-    ssn: string
+    ssn: string,
+    entries: Entry[]
 }
 
 export type PatientsWithoutSsn = Omit<Patients, "ssn">
