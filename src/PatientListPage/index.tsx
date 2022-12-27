@@ -16,7 +16,7 @@ const PatientListPage = () => {
   const [{ patients }, dispatch] = useStateValue();
 
   const [modalOpen, setModalOpen] = React.useState<boolean>(false);
-  const [error, setError] = React.useState<string>();
+  const [error, setError] = React.useState<string | undefined>();
 
   const openModal = (): void => setModalOpen(true);
 
@@ -33,6 +33,25 @@ const PatientListPage = () => {
       );
       dispatch({ type: "ADD_PATIENT", payload: newPatient });
       closeModal();
+    } catch (e: unknown) {
+      if (axios.isAxiosError(e)) {
+        console.error(e?.response?.data || "Unrecognized axios error");
+        setError(String(e?.response?.data?.error) || "Unrecognized axios error");
+      } else {
+        console.error("Unknown error", e);
+        setError("Unknown error");
+      }
+    }
+  };
+
+  const getPatientInfo = async ( id: string) => {
+    try {
+      const {data} = await axios.get<Patient>(
+        `${apiBaseUrl}/patients/`+ id
+      );
+      console.log(data);
+      dispatch({ type: "SET_PATIENT", payload: data});
+      openModal();
     } catch (e: unknown) {
       if (axios.isAxiosError(e)) {
         console.error(e?.response?.data || "Unrecognized axios error");
@@ -63,7 +82,7 @@ const PatientListPage = () => {
         <TableBody>
           {Object.values(patients).map((patient: Patient) => (
             <TableRow key={patient.id}>
-              <TableCell>{patient.name}</TableCell>
+              <TableCell onClick={() => getPatientInfo(patient.id)}>{patient.name}</TableCell>
               <TableCell>{patient.gender}</TableCell>
               <TableCell>{patient.occupation}</TableCell>
               <TableCell>
