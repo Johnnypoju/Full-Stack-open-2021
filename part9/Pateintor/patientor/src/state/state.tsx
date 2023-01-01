@@ -1,7 +1,6 @@
 import React, { createContext, useContext, useReducer } from "react";
 import { Gender, Patient } from "../types";
 
-import { Action } from "./reducer";
 
 export type State = {
   patients: { [id: string]: Patient };
@@ -19,13 +18,13 @@ const initialState: State = {
   }
 };
 
-export const StateContext = createContext<[State, React.Dispatch<Action>]>([
+export const StateContext = createContext<[State, React.Dispatch<any>]>([
   initialState,
   () => initialState
 ]);
 
 type StateProviderProps = {
-  reducer: React.Reducer<State, Action>;
+  reducer: React.Reducer<State, any>;
   children: React.ReactElement;
 };
 
