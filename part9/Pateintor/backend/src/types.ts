@@ -62,7 +62,7 @@ export type PatientsWithoutSsn = Omit<Patients, "ssn">
 export type NewPatientEntry = Omit<Patients, "id">
 
 export enum Gender {
-    Male,
-    Female,
-    Other
+    Male = "male",
+    Female = "female",
+    Other = "other"
   }

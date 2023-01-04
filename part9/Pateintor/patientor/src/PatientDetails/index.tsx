@@ -3,9 +3,11 @@ import { useParams } from "react-router-dom";
 import getPatient from "./getPatient";
 import GenderReveal from "./genderReveal";
 import "../index.css";
+import EntryDetails from "./EntryDetails";
+import { Stack } from "@mui/material";
 
 const PatientDetailsPage = () => {
-    const [{diagnoses, patient}, dispatch] = useStateValue();
+    const [ {patient}, dispatch] = useStateValue();
     const { id } = useParams<{ id: string }>();
     
      
@@ -32,21 +34,12 @@ const PatientDetailsPage = () => {
     <p>ssn: {patient.ssn}<br></br>
     occupation: {patient.occupation}</p>
     <h3>entries</h3>
+    <Stack spacing={3}>
     {patient.entries.map((entry) => {
-        if (entry.diagnosisCodes !== undefined) {
-            console.log(diagnoses);
-                return <p key={entry.id}>{entry.date} {entry.description}
-                {entry.diagnosisCodes.map((diagnosisCode, index) => {
-                    return <li key={index} className="padded">{diagnosisCode} {diagnoses.find(diagnosis => diagnosis.code === diagnosisCode)?.name}</li>;
-                })}</p>;
-           
-            
-        }
-        else {
-            return <p key={entry.id}>{entry.date} {entry.description}</p>;
-        }
+        return (<EntryDetails key={entry.id} entry={entry}/>);
         
     })}
+    </Stack>
      </div>);
     
 };

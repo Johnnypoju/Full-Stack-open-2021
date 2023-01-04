@@ -3,11 +3,11 @@ import { Gender } from "../types";
 
 const GenderReveal = ({gender}: {gender: Gender}) => {
     switch (gender) {
-        case 0:
+        case "male":
             return (<Male />);
-        case 1:
+        case "female":
             return (<Female />);
-        case 2: 
+        case "other": 
             return (<div></div>);
         default: 
             return (<div></div>);
