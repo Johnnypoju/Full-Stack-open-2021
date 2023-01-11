@@ -1,4 +1,3 @@
-import React from "react";
 import { Grid, Button } from "@material-ui/core";
 import { Field, Formik, Form } from "formik";
 
@@ -93,9 +92,7 @@ export const AddPatientForm = ({ onSubmit, onCancel }: Props) => {
               </Grid>
               <Grid item>
                 <Button
-                  style={{
-                    float: "right",
-                  }}
+                  style={{ float: "right" }}
                   type="submit"
                   variant="contained"
                   disabled={!dirty || !isValid}

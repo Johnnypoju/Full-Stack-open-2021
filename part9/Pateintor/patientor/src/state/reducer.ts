@@ -19,7 +19,12 @@ export type Action =
   | {
       type: "SET_DIAGNOSES";
       payload: Diagnoses[];
-  };
+    }
+  | {
+      type: "ADD_ENTRY";
+      payload: Entry
+  }  
+  ;
 
 
 export const reducer = (state: State, action: Action): State => {
@@ -71,7 +76,10 @@ export const reducer = (state: State, action: Action): State => {
               latin: diagnosis.latin
             };
           })
+    
           };
+
+    case "ADD_ENTRY":
     default:
       return state;
   }

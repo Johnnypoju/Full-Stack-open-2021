@@ -28,24 +28,28 @@ interface HealthCheckEntry extends BaseEntry {
 interface OccupationalHealthcareEntry extends BaseEntry {
     type: "OccupationalHealthcare";
     employerName: string;
-    sickLeave?: {
-        startDate: string;
-        endDate: string;
-    }
+    sickLeave?: SickLeave;
 }
 
 interface HospitalEntry extends BaseEntry {
     type: "Hospital";
-    discharge: {
-        date: string;
-        criteria: string;
-    };
+    discharge: Discharge;
 }
 
 export type Entry = 
     | HospitalEntry
     | OccupationalHealthcareEntry
     | HealthCheckEntry;
+
+export interface Discharge {
+    date: string;
+    criteria: string;
+}
+
+export interface SickLeave {
+    startDate: string;
+    endDate: string;
+}
 
 export interface Patients {
     id: string;
@@ -54,10 +58,14 @@ export interface Patients {
     gender: Gender;
     occupation: string;
     ssn: string;
-    entries: Entry[]
+    entries: Entry[];
 }
 
 export type PatientsWithoutSsn = Omit<Patients, "ssn">
+
+export type NewEntry = Omit<HospitalEntry, "id">
+                    | Omit<OccupationalHealthcareEntry, "id">
+                    | Omit<HealthCheckEntry, "id">;
 
 export type NewPatientEntry = Omit<Patients, "id">
 

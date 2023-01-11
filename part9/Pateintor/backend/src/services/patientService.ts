@@ -1,7 +1,8 @@
 import patientData from "../data/patients";
-import { Patients, PatientsWithoutSsn, NewPatientEntry } from "../types";
+import { Patients, PatientsWithoutSsn, NewPatientEntry, Entry, NewEntry } from "../types";
 
 import { v1 as uuid } from 'uuid';
+import errorLogger from "../utils/errorLogger";
 
 const id = uuid()
 
@@ -19,6 +20,7 @@ const getEntries = (): Array<PatientsWithoutSsn> => {
 }
 
 const addPatient = ( object: NewPatientEntry ): Patients => {
+    
     const newPatientEntry = {
         id: id,
         name: object.name,
@@ -28,7 +30,9 @@ const addPatient = ( object: NewPatientEntry ): Patients => {
         occupation: object.occupation,
         entries: object.entries
     }
+    console.log(newPatientEntry)
     patientData.push(newPatientEntry)
+    console.log(patientData)
     return newPatientEntry
 }
 
@@ -49,4 +53,40 @@ const getPatient = ( patient: string): Patients => {
     return patientInfo;
 }
 
-export default { getEntries, addPatient, getPatient}
+const pushEntry = ( entry: Entry, patientId: string) => {
+    try {
+    patientData.map((data) => {
+        if(data.id === patientId) data.entries.push(entry)
+    })
+    } catch (error: unknown) {
+        errorLogger(error);
+    }
+    return entry;
+}
+
+const addEntry = ( object: NewEntry, patientId: string): Entry => {
+    const entry = {
+        id: id,
+        description: object.description,
+        date: object.date,
+        specialist: object.specialist,
+        diagnosisCodes: object.diagnosisCodes
+    }
+    let addedEntry
+    switch(object.type) {
+        case "HealthCheck":
+            addedEntry = {...entry, type: object.type, healthCheckRating: object.healthCheckRating};
+            break;
+        case "Hospital":
+            addedEntry = {...entry, type: object.type, discharge: object.discharge};
+            break;
+        case "OccupationalHealthcare":
+            addedEntry = {...entry, type: object.type, sickLeave: object.sickLeave, employerName: object.employerName}
+            break;
+    }
+    return pushEntry(addedEntry, patientId)
+    
+}
+
+
+export default { getEntries, addPatient, getPatient, addEntry}
