@@ -58,7 +58,7 @@ export const AddPatientForm = ({ onSubmit, onCancel }: Props) => {
               placeholder="Name"
               name="name"
               component={TextField}
-            />
+            /> 
             <Field
               label="Social Security Number"
               placeholder="SSN"

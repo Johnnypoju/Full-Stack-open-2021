@@ -1,112 +1,34 @@
-import { Grid, Button } from "@material-ui/core";
+/*import { Grid, Button } from "@material-ui/core";
 import { Formik, Form, Field } from "formik";
-import { DiagnosisSelection, TextField } from "../AddPatientModal/FormField";
+import { DiagnosisSelection, TextField, SelectField } from "./FormField";*/
 import { useStateValue } from "../state";
 import { NewEntry } from "../types";
+import HealtCheckForm from "../AddEntryForms/HealthCheckForm";
+import OccupationalHealthcare from "../AddEntryForms/OccupationalHealthcare";
+import Hospital from "../AddEntryForms/Hospital";
 
 
 interface Props {
     onSubmit: (values: NewEntry) => void;
     onCancel: () => void;
+    type: string;
   }
 
-export const AddEntryForm = ({ onSubmit, onCancel }: Props) => {
-    const [{ diagnoses }] = useStateValue();
-  
-    return (
-      <Formik
-        initialValues={{
-          description: "",
-          date: "",
-          specialist: "",
-          diagnosisCodes: [],
-          type: "HealthCheck",
-          healthCheckRating: 0
-        }}
-        onSubmit={onSubmit}
-        validate={values => {
-          const requiredError = "Field is required";
-          const errors: { [field: string]: string } = {};
-          if (!values.description) {
-            errors.description = requiredError;
-          } 
-          if (!values.date) {
-            errors.date = requiredError;
-          }
-          if (!values.specialist) {
-            errors.specialist = requiredError;
-          } 
-          if (!values.diagnosisCodes) {
-            errors.diagnosisCodes = requiredError;
-          } 
-          if (!values.type) {
-            errors.type = requiredError;
-          }
-          return errors;
-        }}
-      >
-      {({ isValid, dirty, setFieldValue, setFieldTouched }) => {
-  
-        return (
-          <Form className="form ui">
-            <Field 
-                label="Description"
-                placeholder="Description"
-                name="description"
-                component={TextField}
-            /> 
-             <Field 
-                label="Date"
-                placeholder="Date"
-                name="date"
-                component={TextField}
-            /> 
-             <Field 
-                label="Specialist"
-                placeholder="Specialist"
-                name="specialist"
-                component={TextField}
-            /> 
-             <Field 
-                label="Healthcheck Rating"
-                placeholder="Healthcheck Rating"
-                name="healthCheckRating"
-                component={TextField}
-            />
-            <DiagnosisSelection
-              setFieldValue={setFieldValue}
-              setFieldTouched={setFieldTouched}
-              diagnoses={Object.values(diagnoses)}
-            />    
-        <Grid>
-            <Grid item>
-                <Button
-                    color="secondary"
-                    variant="contained"
-                    style={{ float: "left"}}
-                    type="button"
-                    onClick={onCancel}
-                    >
-                        Cancel
-                </Button>
-            </Grid>
-            <Grid item>
-                <Button 
-                    style={{ float: "right"}}
-                    type="submit"
-                    variant="contained"
-                    disabled={!dirty || !isValid}
-                >
-                    Add
-                </Button>
-            </Grid>
-        </Grid>
-            
-          </Form>
-        );
-      }};
-    </Formik>
-    );
+
+
+export const AddEntryForm = ({ onSubmit, onCancel, type}: Props) => {
+  const [{ diagnoses }] = useStateValue();
+  switch(type) {
+    case "HealthCheck":
+      return  <HealtCheckForm onSubmit={onSubmit} onCancel={onCancel} diagnoses={diagnoses}/>;
+    case "Hospital":
+      return <Hospital onSubmit={onSubmit} onCancel={onCancel} diagnoses={diagnoses} />;
+      case "OccupationalHealthcare":
+        return <OccupationalHealthcare onSubmit={onSubmit} onCancel={onCancel} diagnoses={diagnoses} />;
+    default:
+      return <div></div>;
+    }
+    
   };
 
   export default AddEntryForm;

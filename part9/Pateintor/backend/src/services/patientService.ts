@@ -4,7 +4,7 @@ import { Patients, PatientsWithoutSsn, NewPatientEntry, Entry, NewEntry } from "
 import { v1 as uuid } from 'uuid';
 import errorLogger from "../utils/errorLogger";
 
-const id = uuid()
+//const id = uuid()
 
 const getEntries = (): Array<PatientsWithoutSsn> => {
     const filteredPatients = patientData.map((data) => {
@@ -20,7 +20,8 @@ const getEntries = (): Array<PatientsWithoutSsn> => {
 }
 
 const addPatient = ( object: NewPatientEntry ): Patients => {
-    
+    const id = uuid()
+    console.log(object)
     const newPatientEntry = {
         id: id,
         name: object.name,
@@ -65,6 +66,7 @@ const pushEntry = ( entry: Entry, patientId: string) => {
 }
 
 const addEntry = ( object: NewEntry, patientId: string): Entry => {
+    const id = uuid()
     const entry = {
         id: id,
         description: object.description,
